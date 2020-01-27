@@ -1,0 +1,4 @@
+xst -intstyle ise -ifn "/home/ise/Lab1/lab1.xst" -ofn "/home/ise/Lab1/lab1.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx16-csg324-3 lab1.ngc lab1.ngd  
+map -intstyle ise -p xc6slx16-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o lab1_map.ncd lab1.ngd lab1.pcf 
+map -intstyle ise -p xc6slx16-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o lab1_map.ncd lab1.ngd lab1.pcf 

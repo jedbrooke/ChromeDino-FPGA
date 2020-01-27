@@ -1,0 +1,7 @@
+verilog isim_temp "lab1_priority_encoder.v"
+verilog isim_temp "lab1_round.v"
+verilog isim_temp "lab1_middleman.v"
+verilog isim_temp "lab1_2comp-SM_encoder.v"
+verilog isim_temp "lab1.v"
+verilog isim_temp "lab1_TB.v"
+verilog isim_temp "C:/Xilinx/14.6/ISE_DS/ISE//verilog/src/glbl.v"

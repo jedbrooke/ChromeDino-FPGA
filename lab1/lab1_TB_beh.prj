@@ -1,0 +1,7 @@
+verilog work "lab1_priority_encoder.v"
+verilog work "lab1_round.v"
+verilog work "lab1_middleman.v"
+verilog work "lab1_2comp-SM_encoder.v"
+verilog work "lab1.v"
+verilog work "lab1_TB.v"
+verilog work "C:/Xilinx/14.6/ISE_DS/ISE//verilog/src/glbl.v"
