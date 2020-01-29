@@ -1,3 +1,7 @@
 *
+!.gitattributes
+!/gitignore
+!readme.md
+!.gitkeep
 !*.v
 !*/
