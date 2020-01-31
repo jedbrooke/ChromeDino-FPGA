@@ -37,7 +37,7 @@ module uart_top (/*AUTOARG*/
    wire [7:0]           tfifo_out;              // From tfifo_ of uart_fifo.v
    // End of automatics
 
-   reg [7:0]            tfifo_in;
+   reg [23:0]            tfifo_in;
    wire                 tx_active;
    wire                 tfifo_rd;
    reg                  tfifo_rd_z;
