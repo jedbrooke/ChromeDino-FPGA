@@ -43,7 +43,8 @@ module nexys3 (/*AUTOARG*/
    reg [2:0]   step_d;
 
    reg [7:0]   inst_cnt;
-   
+
+   reg [1:0] regID; //Will hold a register number
    // ===========================================================================
    // Asynchronous Reset
    // ===========================================================================
@@ -112,6 +113,9 @@ module nexys3 (/*AUTOARG*/
 
    assign led[7:0] = inst_cnt[7:0];
    
+   //Once instruction is sent, extract and store the register number 
+   always @ (posedge inst_vld) 
+      regID <= sw[5:4];	
    // ===========================================================================
    // Sequencer
    // ===========================================================================
@@ -141,6 +145,7 @@ module nexys3 (/*AUTOARG*/
                        .i_rx            (RsRx),
                        .i_tx_data       (seq_tx_data[seq_dp_width-1:0]),
                        .i_tx_stb        (seq_tx_valid),
+	   	       .i_regID	        (regID),	
                        /*AUTOINST*/
                        // Inputs
                        .clk             (clk),
