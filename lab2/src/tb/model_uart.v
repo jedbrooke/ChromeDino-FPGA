@@ -44,7 +44,7 @@ module model_uart(/*AUTOARG*/
   //Once we receive a byte, trigger this always block
   always @(evByte) 
     begin  
-      if rxData == "\r" //Display will convert buffer to HEX and append newline before outputting 
+       if (rxData == "\r") //Display will convert buffer to HEX and append newline before outputting 
           $display ("%d %s Received byte %02x (%s)", $stime, name, buffer, buffer);
       	else //Left shift by 8 bits and add received data to last 8 bits
           buffer[31:0] = {buffer[23:0],rxData[7:0]};
