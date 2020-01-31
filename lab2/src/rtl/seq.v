@@ -36,6 +36,8 @@ module seq (/*AUTOARG*/
    wire                    inst_op_push;
    wire                    inst_op_send;
    wire                    inst_op_add;
+	wire							inst_op_mult;
+	
 
    wire [seq_rn_width-1:0] rf_wsel;
    wire                    rf_wstb;

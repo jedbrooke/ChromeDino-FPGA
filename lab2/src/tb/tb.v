@@ -5,6 +5,7 @@ module tb;
    reg [7:0] sw;
    reg       clk;
    reg       btnS;
+   reg       btnSend;
    reg       btnR;
    
    integer   i;
@@ -24,6 +25,7 @@ module tb;
         clk = 0;
         btnR = 1;
         btnS = 0;
+        btnSend = 0;
         #1000 btnR = 0;
         #1500000;
         
@@ -61,6 +63,7 @@ module tb;
                 .RsRx                   (RsRx),
                 .sw                     (sw[7:0]),
                 .btnS                   (btnS),
+                .btnSend                (btnSend),
                 .btnR                   (btnR),
                 .clk                    (clk));
 
