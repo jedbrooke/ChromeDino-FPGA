@@ -2,7 +2,7 @@ module uart_top (/*AUTOARG*/
    // Outputs
    o_tx, o_tx_busy, o_rx_data, o_rx_valid,
    // Inputs
-   i_rx, i_tx_data, i_tx_stb, clk, rst
+   i_rx, i_tx_data, i_tx_stb, i_regID clk, rst
    );
 
 `include "seq_definitions.v"
@@ -16,14 +16,19 @@ module uart_top (/*AUTOARG*/
    
    input [seq_dp_width-1:0] i_tx_data;
    input                    i_tx_stb;
+   input[1:0]               i_regID; 
    
    input                    clk;
    input                    rst;
 
-   parameter stIdle = 0;
-   parameter stNib1 = 1;
-   parameter stNL   = uart_num_nib+1;
-   parameter stCR   = uart_num_nib+2;
+   parameter stIdle = 0; 
+   parameter stRChar = 1; 
+   parameter stRegID = 2; 
+   parameter stColon = 3; 
+   parameter stTxData = 3; 
+   parameter stNib1 = 4; //Starts at 4 now since states 1,2,3 map to ("R",regID,":") 
+   parameter stNL   = uart_num_nib+4; //Newline will come in after stNib4
+   parameter stCR   = uart_num_nib+5; //Carriage return comes right after stNL 
    
    /*AUTOWIRE*/
    // Beginning of automatic wires (for undeclared instantiated-module outputs)
@@ -37,7 +42,7 @@ module uart_top (/*AUTOARG*/
    wire                 tfifo_rd;
    reg                  tfifo_rd_z;
    reg [seq_dp_width-1:0]  tx_data;
-   reg [2:0]               state;
+   reg [3:0]               state; //Added one more bit to hold more than 7 states
 
    assign o_tx_busy = (state!=stIdle);
    
@@ -46,12 +51,16 @@ module uart_top (/*AUTOARG*/
        state <= stIdle;
      else
        case (state)
-         stIdle:
+         stIdle: 
            if (i_tx_stb)
              begin
-                state   <= stNib1;
-                tx_data <= i_tx_data;
+                state <= stRChar;
              end
+         stTxData: 
+            begin 
+            tx_data <= i_tx_data;
+            state <= state + 1; 
+            end 
          stCR:
            if (~tfifo_full) state <= stIdle;
          default:
@@ -62,7 +71,7 @@ module uart_top (/*AUTOARG*/
              end
        endcase // case (state)
 
-   function [7:0] fnNib2ASCII;
+   function [7:0] fnNib2ASCII; //Converts nibble (4-bits) to ASCII 
       input [3:0] din;
       begin
          case (din)
@@ -88,6 +97,9 @@ module uart_top (/*AUTOARG*/
 
    always @*
      case (state)
+       stRChar:   tfifo_in = "R"; 
+       stRegID:   tfifo_in = fnNib2ASCII({00,i_regID[1:0]}); //Convert register ID to ASCII 
+       stColon:   tfifo_in = ":";
        stNL:    tfifo_in = "\n";
        stCR:    tfifo_in = "\r";
        default: tfifo_in = fnNib2ASCII(tx_data[seq_dp_width-1:seq_dp_width-4]);
