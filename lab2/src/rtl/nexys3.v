@@ -2,7 +2,7 @@ module nexys3 (/*AUTOARG*/
    // Outputs
    RsTx, led,
    // Inputs
-   RsRx, sw, btnS, btnR, clk
+   RsRx, sw, btnS, btnSend, btnR, clk
    );
 
 `include "seq_definitions.v"
@@ -15,6 +15,7 @@ module nexys3 (/*AUTOARG*/
    input  [7:0] sw;
    output [7:0] led;
    input        btnS;                 // single-step instruction
+   input        btnSend;
    input        btnR;                 // arst
    
    // Logic
@@ -41,6 +42,7 @@ module nexys3 (/*AUTOARG*/
    reg [7:0]   inst_wd;
    reg         inst_vld;
    reg [2:0]   step_d;
+   reg [2:0]   step_d_send;
 
    reg [7:0]   inst_cnt;
    
@@ -86,11 +88,14 @@ module nexys3 (/*AUTOARG*/
        begin
           inst_wd[7:0] <= 0;
           step_d[2:0]  <= 0;
+          step_d_send[2:0] <= 0;
        end
      else if (clk_en) // Down sampling
        begin
           inst_wd[7:0] <= sw[7:0];
           step_d[2:0]  <= {btnS, step_d[2:1]};
+          step_d_send[2:0] <= {btnSend, step_d_send[2:1]};
+
        end
 	   
 	// Detecting posedge of btnS
@@ -101,6 +106,26 @@ module nexys3 (/*AUTOARG*/
        inst_vld <= 1'b0;
      else if (clk_en_d)
        inst_vld <= is_btnS_posedge;
+	  else
+	    inst_vld <= 0;
+
+   always @ (posedge clk)
+     if (rst)
+       inst_cnt <= 0;
+     else if (inst_vld)
+       inst_cnt <= inst_cnt + 1;
+
+  // Detecting posedge of btnSend
+   wire is_btnSend_posedge;
+   assign is_btnSend_posedge = ~ step_d_send[0] & step_d_send[1];
+   always @ (posedge clk)
+     if (rst)
+       inst_vld <= 1'b0;
+     else if (clk_en_d)
+       inst_vld <= is_btnSend_posedge;
+        if(is_btnSend_posedge) begin
+          inst_wd[seq_in_width-1:seq_in_width-2] <= 2'b11;
+        end
 	  else
 	    inst_vld <= 0;
 
