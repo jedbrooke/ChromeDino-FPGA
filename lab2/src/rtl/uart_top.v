@@ -2,7 +2,7 @@ module uart_top (/*AUTOARG*/
    // Outputs
    o_tx, o_tx_busy, o_rx_data, o_rx_valid,
    // Inputs
-   i_rx, i_tx_data, i_tx_stb, i_regID clk, rst
+   i_rx, i_tx_data, i_tx_stb, i_regID, clk, rst
    );
 
 `include "seq_definitions.v"
