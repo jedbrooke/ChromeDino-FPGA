@@ -126,13 +126,13 @@ module nexys3 (/*AUTOARG*/
    always @ (posedge clk)
      if (rst)
        inst_cnt <= 0;
-     else if (inst_vld)
+     else if (inst_vld || SEND_vld)
        inst_cnt <= inst_cnt + 1;
 
    assign led[7:0] = inst_cnt[7:0];
    
     //Once instruction is sent, extract and store the register number 
-   always @ (posedge inst_vld) 
+   always @ (inst_vld, SEND_vld) 
       regID <= sw[5:4];	
   
    // ===========================================================================
