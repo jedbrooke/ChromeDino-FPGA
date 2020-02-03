@@ -54,7 +54,7 @@ module model_uart(/*AUTOARG*/
 						FL_displayed = 1'b1; 
 					end
 				else
-					FL_displayed = 0'b0;
+					FL_displayed = 1'b0;
 			end
       	else //Left shift by 8 bits and add received data to last 8 bits
           buffer[31:0] = {buffer[23:0],rxData[7:0]};
