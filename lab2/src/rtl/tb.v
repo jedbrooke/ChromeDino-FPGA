@@ -21,10 +21,6 @@ module tb;
         //$shm_open  ("dump", , ,1);
         //$shm_probe (tb, "ASTF");
 
-        reg [1023:0] lines [7:0];
-
-         $readmemb("seq.code", lines)
-
         clk = 0;
         btnR = 1;
         btnS = 0;
