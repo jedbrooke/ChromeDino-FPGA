@@ -15,23 +15,33 @@ module tb;
    wire                 RsTx;                   // From uut_ of nexys3.v
    wire [7:0]           led;                    // From uut_ of nexys3.v
    // End of automatics
-
-   initial
+	
+	reg [7:0] numLines;
+	reg [7:0] lines [1023:0];
+   
+	initial
      begin
         //$shm_open  ("dump", , ,1);
         //$shm_probe (tb, "ASTF");
 
-        reg [1023:0] lines [7:0];
-
-         $readmemb("seq.code", lines)
+        $readmemb("seq.code", lines);
 
         clk = 0;
         btnR = 1;
         btnS = 0;
         #1000 btnR = 0;
         #1500000;
-        
-        tskRunPUSH(0,4);
+		  
+		  assign numLines = lines[0];
+		  
+		  for (i = 1; i < numLines; i = i+1)
+		  begin
+				sw = lines[i];
+				#1500000 btnS = 1;
+				#3000000 btnS = 0;
+		  end
+        /*
+		  tskRunPUSH(0,4);
         tskRunPUSH(0,0);
         tskRunPUSH(1,3);
         tskRunMULT(0,1,2);
@@ -40,13 +50,14 @@ module tb;
         tskRunSEND(1);
         tskRunSEND(2);
         tskRunSEND(3);
+		  */
         
         #1000;        
         $finish;
      end
 
    always #5 clk = ~clk;
-   
+	
    model_uart model_uart0_ (// Outputs
                             .TX                  (RsRx),
                             // Inputs
