@@ -1,0 +1,9 @@
+Workshop
+Clock Dividers
+1. 47,186,935 ns --> 48,497,655 ns = 1310720 = period
+2. T = 10ns, D = T/P * 100% = 0.000762939%
+3. clk_dv = 17'b0
+
+Debouncing
+1. ... would activate one cycle later (a delay!), as it takes 1 cycle for the setting of clk_en to propogate to clk_en_d in the code given
+2. 50% duty cyle essentially disables debouncing, as multiple posedges of the button presses are registered. We changed the tb.v to simulate bouncing (multiple posedges in rapid succession on a "single" button press)
