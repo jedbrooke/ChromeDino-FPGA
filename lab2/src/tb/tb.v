@@ -34,7 +34,7 @@ module tb;
 		  
 		  assign numLines = lines[0];
 		  
-		  for (i = 1; i < numLines; i = i+1)
+	     	  for (i = 1; i < numLines+1; i = i+1)
 		  begin
 				sw = lines[i];
 				#1500000 btnS = 1;
