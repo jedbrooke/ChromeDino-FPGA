@@ -7,3 +7,7 @@ Clock Dividers
 Debouncing
 1. ... would activate one cycle later (a delay!), as it takes 1 cycle for the setting of clk_en to propogate to clk_en_d in the code given
 2. 50% duty cyle essentially disables debouncing, as multiple posedges of the button presses are registered. We changed the tb.v to simulate bouncing (multiple posedges in rapid succession on a "single" button press)
+
+Register File
+1. This code is sequential, since it only happens on clock edges
+2. This code is combinational, since it happened with an assign outside of a triggered always segment. 
