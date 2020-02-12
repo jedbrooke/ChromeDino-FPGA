@@ -18,36 +18,40 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module fourbitcounter(
-    max, num, set, inc, state, carry
+module counter_4bit(
+    i_max, i_num, i_set, i_inc, o_val, o_carry
     );
-	 input [3:0] max;
-	 input [3:0] num;
-	 input set;
-	 input inc;
-	 output reg [3:0] state;
-	 output wire carry;
+	 
+	 input [3:0] i_max;
+	 input [3:0] i_num;
+	 input i_set;
+	 input i_inc;
+	 
+	 output reg [3:0] o_val;
+	 output wire o_carry;
+	 
 	 reg [3:0] last_state;
 	 
-	 assign carry = (last_state == max);
+	 assign o_carry = (last_state == i_max);
 	 
-	 always @(posedge inc) begin
-			if(set) begin
-				state[3:0] <= num[3:0];
-			end else begin
-				last_state = state;
-				if(state < max) begin
-					state = state + 1'b1;
-				end else begin
-					state = 4'b0;
+	 always @(posedge i_inc)
+	 begin
+			if(i_set)
+			begin
+				o_val[3:0] <= i_num[3:0];
+			end
+			else
+			begin
+				last_state = o_val;
+				if(o_val < i_max)
+				begin
+					o_val = o_val + 1'b1;
+				end
+				else
+				begin
+					o_val = 4'b0;
 				end
 			end
- 	 end
-	 
-	 
-	 
-	 
-	 
-
-
+	end
+	
 endmodule
