@@ -1,4 +1,4 @@
-`timescale 1ms / 1ns
+`timescale 1ms / 1us
 
 
 module gpu_tb(
