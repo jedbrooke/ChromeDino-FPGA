@@ -13,7 +13,7 @@ module gpu(dp_clk,blink_clk,nums,adj){
     output [3:0] anodes;
 
     for(integer i = 0; i < 4; i = i + 1) begin
-        assign anodes[i] = (i == index);
+        assign anodes[i] = ~(i == index);
     end
     always @(posedge dp_clk) begin
         index <= index + 1'b1;
