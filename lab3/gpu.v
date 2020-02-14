@@ -24,20 +24,20 @@ module gpu(
 	 
     always @(posedge dp_clk) begin
         index <= index + 1'b1;
-		  val <= split_nums[index];
-		  if(~anodes[0])  begin
-			 anodes[0] <= 1;
-			 anodes[1] <= 0;
-		  end else if(~anodes[1]) begin
-			 anodes[1] <= 1;
-			 anodes[2] <= 0;
-		  end else if(~anodes[2]) begin
-			 anodes[2] <= 1;
-			 anodes[3] <= 0;
+        val <= split_nums[index];
+        if(~anodes[0])  begin
+            anodes[0] <= 1;
+            anodes[1] <= 0;
+        end else if(~anodes[1]) begin
+            anodes[1] <= 1;
+            anodes[2] <= 0;
+        end else if(~anodes[2]) begin
+            anodes[2] <= 1;
+            anodes[3] <= 0;
         end else begin
-			 anodes[3] <= 1;
-			 anodes[0] <= 0;
-		  end
+            anodes[3] <= 1;
+            anodes[0] <= 0;
+        end
     end
 
     always @(posedge blink_clk or adj) begin
