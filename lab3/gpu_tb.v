@@ -10,12 +10,13 @@ module gpu_tb(
     reg dp_clk;
     reg blink_clk;
     reg [3:0] nums [0:3];
+	 reg [15:0] nums_flatten;
     reg adj;
 
     gpu gpu(
         .dp_clk(dp_clk),
         .blink_clk(blink_clk),
-        .nums(nums),
+        .nums(nums_flatten),
         .adj(adj),
         .cats(seg),
         .anodes(an)
@@ -27,42 +28,39 @@ module gpu_tb(
         an = 0;
         dp_clk = 0;
         blink_clk = 0;
-        nums = 0;
+        nums[0] = 0;
+		  nums[1] = 0;
+		  nums[2] = 0;
+		  nums[3] = 0;
+		  nums_flatten = 0;
         adj = 0;
+		  assign nums_flatten = {nums[0],nums[1],nums[2],nums[3]};
 
         // Wait 100 ns for global reset to finish
-		#100;
+		  #100;
 
         // Add stimulus here
-        for(integer i = 0; i < 4; i = i+1) begin
-            nums[i] = i;
-        end
-        #2000
-        for(integer i = 0; i < 4; i = i+1) begin
-            nums[i] = i*2;
-        end
-        #2000
-        for(integer i = 0; i < 4; i = i+1) begin
-            nums[i] = i + 4;
-        end
-        #2000
-        for(integer i = 0; i < 4; i = i+1) begin
-            nums[i] = 8;
-        end
-        #2000
-        for(integer i = 0; i < 4; i = i+1) begin
-            nums[i] = 9;
-        end
-        #2000 $finish;
+		  #100 nums[0] = 0;
+		  #100 nums[1] = 1;
+		  #100 nums[2] = 2;
+		  #100 nums[3] = 3;
+		  #2000
+		  #100 nums[0] = 4;
+		  #100 nums[1] = 5;
+		  #100 nums[2] = 6;
+		  #100 nums[3] = 7;
+		  #2000
+		  #100 nums[0] = 8;
+		  #100 nums[1] = 9;
+		  #100 nums[2] = 8;
+		  #100 nums[3] = 9;
+		  
+        #200 $finish;
         
     end
 
-always begin
-    #2 dp_clk = ~dp_clk;
-end
-always begin
-    #1000 blink_clk = ~blink_clk;
-end
+	always #2 dp_clk = ~dp_clk;
+	always #1000 blink_clk = ~blink_clk;
 
 
 
