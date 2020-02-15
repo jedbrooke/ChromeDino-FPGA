@@ -30,7 +30,7 @@ begin
 	//Simply reset if given no btn signal 
 	if(i_btn == 0) 
 	begin 
-		incrementer <= 1'b0; 
+		incrementer <= 18'b0; 
 		temp_state <= 1'b0;
 	end 
 	else 
@@ -39,8 +39,8 @@ begin
 		//Cycle through 2^17 pulses before checking for btn signal
 		if(incrementer[17] == 1'b1) 
 		begin
-			temp_state <= 1'b1; 
-			incrementer <= 1'b0; 
+			incrementer <= 18'b0;
+			temp_state <= 1'b1;  
 		end
 	end
 
