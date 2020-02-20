@@ -1,4 +1,4 @@
 # Python Graphics test
-dependencies:
-pygame https://www.pygame.org/wiki/GettingStarted
-works with any OFF file
+dependencies: <br/>
+pygame https://www.pygame.org/wiki/GettingStarted <br/>
+works with any OFF file <br/>
