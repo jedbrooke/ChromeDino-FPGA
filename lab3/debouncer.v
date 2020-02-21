@@ -32,9 +32,7 @@ begin
 	begin 
 		incrementer <= 18'b0; 
 		temp_state <= 1'b0;
-	end 
-	else 
-	begin 
+	end else begin 
 		incrementer <= incrementer + 1'b1;
 		//Cycle through 2^17 pulses before checking for btn signal
 		if(incrementer[17] == 1'b1) 

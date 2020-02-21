@@ -26,7 +26,7 @@ module input_handling(clk,btnR,btnP,adj,o_rst,o_pause,o_pause_state
 		input adj;
 		output o_rst;
 		output o_pause;
-		output reg o_pause_state;
+		output reg o_pause_state = 0;
 		
 		wire pause_pulse;
 		
@@ -43,10 +43,10 @@ module input_handling(clk,btnR,btnP,adj,o_rst,o_pause,o_pause_state
 		);
 		
 		
-		always @(posedge clk) begin
-			if(~adj & pause_pulse) begin
+		always @(posedge pause_pulse) begin
+			if(~adj) begin
 				o_pause_state <= ~o_pause_state;
-			end else if(adj) begin
+			end else begin
 				o_pause_state <= 1'b1;
 			end
 		end

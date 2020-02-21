@@ -34,10 +34,10 @@ module clk_div(clk, rst, dp_clk, main_clk, adj_clk
 	 
 	 always @(posedge clk) begin
 		if(rst) begin
-			dp_reg <= 0;
+			//dp_reg <= 0;
 			main_reg <= 0;
 			adj_reg <= 0;
-			dp_clk <= 0;
+			//dp_clk <= 0;
 			main_clk <= 0;
 			adj_clk <= 0;
 		end else begin

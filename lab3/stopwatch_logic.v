@@ -58,26 +58,26 @@ module stopwatch_logic(
 	*/
 	
 	always @* begin 
-		en[3] <= (carry[2] & ~i_paused) || (i_paused && i_btnP && i_sel == 3) || rst;
-		en[2] <= (carry[1] & ~i_paused) || (i_paused && i_btnP && i_sel == 3) || rst;
-		en[1] <= (carry[0] & ~i_paused) || (i_paused && i_btnP && i_sel == 3) || rst;
-		en[0] <= (clk_1hz & ~i_paused) || (i_paused && i_btnP && i_sel == 3) || rst;
+		en[3] <= (carry[2]) || (i_adj && i_btnP && i_sel == 3) || rst;
+		en[2] <= (carry[1]) || (i_adj && i_btnP && i_sel == 2) || rst;
+		en[1] <= (carry[0]) || (i_adj && i_btnP && i_sel == 1) || rst;
+		en[0] <= (clk_1hz ) || (i_adj && i_btnP && i_sel == 0) || rst;
 	end
 	
 	counter_4bit digit3 (
-			.i_clk(clk_m), .i_max(max_digit3), .i_num(i_num), .i_set(set[3]), .i_inc(en[3]), .o_val(o_val_arr[3]), .o_carry(carry[3])
+			.i_clk(clk_m), .i_max(max_digit3), .i_num(i_num), .i_set(set[3]), .i_inc(en[3]), .i_paused(i_paused), .o_val(o_val_arr[3]), .o_carry(carry[3])
 		);
 		
 	counter_4bit digit2(
-			.i_clk(clk_m), .i_max(max_digit2), .i_num(i_num), .i_set(set[2]), .i_inc(en[2]), .o_val(o_val_arr[2]), .o_carry(carry[2])
+			.i_clk(clk_m), .i_max(max_digit2), .i_num(i_num), .i_set(set[2]), .i_inc(en[2]), .i_paused(i_paused), .o_val(o_val_arr[2]), .o_carry(carry[2])
 		);
 		
 	counter_4bit digit1(
-			.i_clk(clk_m), .i_max(max_digit1), .i_num(i_num), .i_set(set[1]), .i_inc(en[1]), .o_val(o_val_arr[1]), .o_carry(carry[1])
+			.i_clk(clk_m), .i_max(max_digit1), .i_num(i_num), .i_set(set[1]), .i_inc(en[1]), .i_paused(i_paused), .o_val(o_val_arr[1]), .o_carry(carry[1])
 		);
 		
 	counter_4bit digit0(
-			.i_clk(clk_m), .i_max(max_digit0), .i_num(i_num), .i_set(set[0]), .i_inc(en[0]), .o_val(o_val_arr[0]), .o_carry(carry[0])
+			.i_clk(clk_m), .i_max(max_digit0), .i_num(i_num), .i_set(set[0]), .i_inc(en[0]), .i_paused(i_paused), .o_val(o_val_arr[0]), .o_carry(carry[0])
 		);
 
 endmodule
