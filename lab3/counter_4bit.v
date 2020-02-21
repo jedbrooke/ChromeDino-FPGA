@@ -36,7 +36,8 @@ module counter_4bit(
 			if(o_carry) begin
 				o_carry <= 1'b0;
 			end else begin
-				o_carry <= (last_state == i_max);
+				if(last_state == i_max) 
+					o_carry <= 1'b1; 
 			end
 	 end
 	 
