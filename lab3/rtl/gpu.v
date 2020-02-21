@@ -41,11 +41,11 @@ module gpu(
             anodes[3] <= 1;
             anodes[0] <= 0;
         end
+		  index <= index + 1'b1;
 	 end
 	 
 	 
     always @(posedge dp_clk) begin
-        index <= index + 1'b1;
         val <= split_nums[index]; 
     end
 

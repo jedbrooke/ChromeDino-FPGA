@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module input_handling(clk,btnR,btnP,adj,o_rst,o_pause,o_pause_state
+module input_handling(clk,btnR,btnP,adj,o_rst,o_pause,o_adj_pulse
     );
 		input clk;
 		input btnR;
@@ -26,14 +26,14 @@ module input_handling(clk,btnR,btnP,adj,o_rst,o_pause,o_pause_state
 		input adj;
 		output o_rst;
 		output o_pause;
-		output reg o_pause_state = 0;
+		output reg o_adj_pulse;
 		
-		wire pause_pulse;
+		reg [1:0] adj_states;
 		
 		debouncer dbP (
 		 .i_clk(clk),
 		 .i_btn(btnP),
-		 .o_btn_state(pause_pulse)
+		 .o_btn_state(o_pause)
 		);
 		 
 		debouncer dbR (
@@ -42,12 +42,16 @@ module input_handling(clk,btnR,btnP,adj,o_rst,o_pause,o_pause_state
 		 .o_btn_state(o_rst)
 		);
 		
-		
-		always @(posedge pause_pulse) begin
-			if(~adj) begin
-				o_pause_state <= ~o_pause_state;
+		always @(posedge clk) begin
+			adj_states <= {adj_states[0],adj};
+			if (adj_states[1] != adj_states[0]) begin
+				o_adj_pulse <= 1'b1;
 			end else begin
-				o_pause_state <= 1'b1;
+				o_adj_pulse <= 1'b0;
 			end
 		end
+		
+		//o_pause either pause_pressed or adj changes
+		
+		
 endmodule

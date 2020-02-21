@@ -28,8 +28,8 @@ module stopwatch(clk, sw, btnP, btnR, seg, an
 	 output [6:0] seg;
 	 output [3:0] an;
 	 
-	 wire pause_state;
 	 wire pause_pulse;
+	 wire adj_pulse;
 	 wire rst;
 	 
 	 wire dp_clk;
@@ -45,7 +45,7 @@ module stopwatch(clk, sw, btnP, btnR, seg, an
 		.adj(sw[2]),
 		.o_rst(rst),
 		.o_pause(pause_pulse),
-		.o_pause_state(pause_state)
+		.o_adj_pulse(adj_pulse)
 		);
 	 
 	 clk_div cd (
@@ -61,8 +61,8 @@ module stopwatch(clk, sw, btnP, btnR, seg, an
 		.rst(rst),
 		.i_num(sw[7:4]),
 		.i_sel(sw[1:0]),
-		.i_paused(pause_state),
 		.i_btnP(pause_pulse),
+		.i_adj_pulse(adj_pulse),
 		.clk_1hz(main_clk),
 		.clk_m(clk),
 		.o_val(nums)

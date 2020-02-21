@@ -19,32 +19,39 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module debouncer(i_clk,i_btn,o_btn_state); 
-input i_btn,i_clk;
-output o_btn_state;
+	input i_btn,i_clk;
+	output reg o_btn_state;
 
-reg temp_state = 0; 
-reg [17:0] incrementer;    
+	wire [17:0] incrementer;
+	reg [16:0] clk_div = 0;
+	reg clk_en;
+	reg clk_en_d;
+	
+	reg [2:0] states = 0;    
 
-always @(posedge i_clk)
-begin 
-	//Simply reset if given no btn signal 
-	if(i_btn == 0) 
-	begin 
-		incrementer <= 18'b0; 
-		temp_state <= 1'b0;
-	end else begin 
-		incrementer <= incrementer + 1'b1;
-		//Cycle through 2^17 pulses before checking for btn signal
-		if(incrementer[17] == 1'b1) 
-		begin
-			incrementer <= 18'b0;
-			temp_state <= 1'b1;  
+	assign incrementer = clk_div + 1;
+	
+	always @(posedge i_clk) begin
+		clk_div <= incrementer[16:0];
+		clk_en <= incrementer[17];
+		clk_en_d <= clk_en;
+	end
+	
+	always @(posedge i_clk) begin
+		if (clk_en) begin
+			states[2:0] <= {i_btn,states[2:1]};
 		end
 	end
 
-end
-
-//Occurs once temp_state has changed 
-assign o_btn_state = temp_state; 
+	wire is_btn_posedge;
+	assign is_btn_posedge = ~states[0] & states[1];
+	
+	always@(posedge i_clk) begin
+		if(clk_en_d) begin
+			o_btn_state <= is_btn_posedge;
+		end else begin
+			o_btn_state <= 0;
+		end
+	end
 
 endmodule 
