@@ -1,10 +1,10 @@
 module tb;
 
     // Inputs
-    reg [31:0] A;
-    reg [31:0] B;
+    reg [127:0] A;
+    reg [127:0] B;
     // Outputs
-    wire [31:0] Res;
+    wire [127:0] Res;
 
     // Instantiate the Unit Under Test (UUT)
     Mat_mult uut (
