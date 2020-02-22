@@ -11,7 +11,7 @@ module Mat_mult(A,B,Res);
     reg [127:0] Res;
     reg [7:0] A1 [0:3][0:3];
     reg [7:0] B1 [0:3][0:3];
-    reg [7:0] Res1 [0:1][0:1]; 
+    reg [7:0] Res1 [0:3][0:3]; 
     integer i,j,k;
 
     always@ (A or B)
