@@ -1,0 +1,3 @@
+[submodule "lab4/timetoexplore"]
+	path = lab4/timetoexplore
+	url = https://github.com/WillGreen/timetoexplore.git
