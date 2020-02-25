@@ -14,8 +14,8 @@ module top(
     output wire [3:0] VGA_B     // 4-bit VGA blue output
     );
 
-    wire rst = ~RST_BTN;    // reset is active low on Arty & Nexys Video
-    // wire rst = RST_BTN;  // reset is active high on Basys3 (BTNC)
+    // wire rst = ~RST_BTN;    // reset is active low on Arty & Nexys Video
+    wire rst = RST_BTN;  // reset is active high on Basys3 (BTNC)
 
     wire [9:0] x;  // current pixel x position: 10-bit value: 0-1023
     wire [8:0] y;  // current pixel y position:  9-bit value: 0-511
