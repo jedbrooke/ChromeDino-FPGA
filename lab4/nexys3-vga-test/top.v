@@ -9,9 +9,9 @@ module top(
     input wire RST_BTN,         // reset button
     output wire VGA_HS_O,       // horizontal sync output
     output wire VGA_VS_O,       // vertical sync output
-    output wire [3:0] VGA_R,    // 4-bit VGA red output
-    output wire [3:0] VGA_G,    // 4-bit VGA green output
-    output wire [3:0] VGA_B     // 4-bit VGA blue output
+    output wire [2:0] VGA_R_O,
+    output wire [2:0] VGA_G_O,
+	output wire [1:0] VGA_B_O
     );
 
     // wire rst = ~RST_BTN;    // reset is active low on Arty & Nexys Video
@@ -20,6 +20,8 @@ module top(
     wire [9:0] x;  // current pixel x position: 10-bit value: 0-1023
     wire [8:0] y;  // current pixel y position:  9-bit value: 0-511
     wire animate;  // high when we're ready to animate at end of drawing
+
+    reg px_color;
 
     // generate a 25 MHz pixel strobe
     reg [15:0] cnt = 0;
@@ -38,52 +40,34 @@ module top(
         .o_animate(animate)
     );
 
-    wire sq_a, sq_b, sq_c;
-    wire [11:0] sq_a_x1, sq_a_x2, sq_a_y1, sq_a_y2;  // 12-bit values: 0-4095 
+    wire catc_1, sq_b, sq_c;
+    wire [11:0] catc_1_x1, catc_1_x2, catc_1_y1, catc_1_y2;  // 12-bit values: 0-4095 
     wire [11:0] sq_b_x1, sq_b_x2, sq_b_y1, sq_b_y2;
     wire [11:0] sq_c_x1, sq_c_x2, sq_c_y1, sq_c_y2;
 
-    square #(.IX(160), .IY(120), .H_SIZE(60)) sq_a_anim (
+    rectangle cactus (
         .i_clk(CLK), 
         .i_ani_stb(pix_stb),
         .i_rst(rst),
         .i_animate(animate),
-        .o_x1(sq_a_x1),
-        .o_x2(sq_a_x2),
-        .o_y1(sq_a_y1),
-        .o_y2(sq_a_y2)
+        .o_x1(catc_1_x1),
+        .o_x2(catc_1_x2),
+        .o_y1(catc_1_y1),
+        .o_y2(catc_1_y2)
     );
 
-    square #(.IX(320), .IY(240), .IY_DIR(0)) sq_b_anim (
-        .i_clk(CLK), 
-        .i_ani_stb(pix_stb),
-        .i_rst(rst),
-        .i_animate(animate),
-        .o_x1(sq_b_x1),
-        .o_x2(sq_b_x2),
-        .o_y1(sq_b_y1),
-        .o_y2(sq_b_y2)
-    );    
 
-    square #(.IX(480), .IY(360), .H_SIZE(100)) sq_c_anim (
-        .i_clk(CLK), 
-        .i_ani_stb(pix_stb),
-        .i_rst(rst),
-        .i_animate(animate),
-        .o_x1(sq_c_x1),
-        .o_x2(sq_c_x2),
-        .o_y1(sq_c_y1),
-        .o_y2(sq_c_y2)
-    );
 
-    assign sq_a = ((x > sq_a_x1) & (y > sq_a_y1) &
-        (x < sq_a_x2) & (y < sq_a_y2)) ? 1 : 0;
-    assign sq_b = ((x > sq_b_x1) & (y > sq_b_y1) &
+    assign catc_1 = ((x > catc_1_x1) & (y > catc_1_y1) &
+        (x < catc_1_x2) & (y < catc_1_y2)) ? 1 : 0;
+    /*assign sq_b = ((x > sq_b_x1) & (y > sq_b_y1) &
         (x < sq_b_x2) & (y < sq_b_y2)) ? 1 : 0;
     assign sq_c = ((x > sq_c_x1) & (y > sq_c_y1) &
-        (x < sq_c_x2) & (y < sq_c_y2)) ? 1 : 0;
+        (x < sq_c_x2) & (y < sq_c_y2)) ? 1 : 0;*/
 
-    assign VGA_R[3] = sq_a;  // square a is red
-    assign VGA_G[3] = sq_b;  // square b is green
-    assign VGA_B[3] = sq_c;  // square c is blue
+    assign px_color = (catc_1) ? CACTUS_COLOR : 8'b0;
+
+    assign VGA_R_O = px_color[7:5];
+    assign VGA_G_O = px_color[4:2];
+    assign VGA_B_O = px_color[1:0];
 endmodule
