@@ -9,11 +9,21 @@ module top(
     input wire RST_BTN,         // reset button
     output wire VGA_HS_O,       // horizontal sync output
     output wire VGA_VS_O,       // vertical sync output
-    output wire [3:0] VGA_R,    // 4-bit VGA red output
-    output wire [3:0] VGA_G,    // 4-bit VGA green output
-    output wire [3:0] VGA_B     // 4-bit VGA blue output
+    output wire [2:0] VGA_R_O,
+	 output wire [2:0] VGA_G_O,
+	 output wire [1:0] VGA_B_O
     );
+	 
+	 /*
+	 wire [3:0] VGA_R;    // 4-bit VGA red output
+    wire [3:0] VGA_G;    // 4-bit VGA green output
+    wire [3:0] VGA_B;     // 4-bit VGA blue output
+	 
+	 assign VGA_R_O = VGA_R[3:1];
+	 assign VGA_G_O = VGA_R[3:1];
+	 assign VGA_B_O = VGA_R[3:2];
 
+ */ 
     // wire rst = ~RST_BTN;    // reset is active low on Arty & Nexys Video
     wire rst = RST_BTN;  // reset is active high on Basys3 (BTNC)
 
@@ -43,7 +53,7 @@ module top(
     wire [11:0] sq_b_x1, sq_b_x2, sq_b_y1, sq_b_y2;
     wire [11:0] sq_c_x1, sq_c_x2, sq_c_y1, sq_c_y2;
 
-    square #(.IX(160), .IY(120), .H_SIZE(60)) sq_a_anim (
+    square #(.IX(160), .IY(120), .H_SIZE(60), .IX_DIR(0)) cactus (
         .i_clk(CLK), 
         .i_ani_stb(pix_stb),
         .i_rst(rst),
@@ -54,27 +64,7 @@ module top(
         .o_y2(sq_a_y2)
     );
 
-    square #(.IX(320), .IY(240), .IY_DIR(0)) sq_b_anim (
-        .i_clk(CLK), 
-        .i_ani_stb(pix_stb),
-        .i_rst(rst),
-        .i_animate(animate),
-        .o_x1(sq_b_x1),
-        .o_x2(sq_b_x2),
-        .o_y1(sq_b_y1),
-        .o_y2(sq_b_y2)
-    );    
 
-    square #(.IX(480), .IY(360), .H_SIZE(100)) sq_c_anim (
-        .i_clk(CLK), 
-        .i_ani_stb(pix_stb),
-        .i_rst(rst),
-        .i_animate(animate),
-        .o_x1(sq_c_x1),
-        .o_x2(sq_c_x2),
-        .o_y1(sq_c_y1),
-        .o_y2(sq_c_y2)
-    );
 
     assign sq_a = ((x > sq_a_x1) & (y > sq_a_y1) &
         (x < sq_a_x2) & (y < sq_a_y2)) ? 1 : 0;
@@ -83,7 +73,7 @@ module top(
     assign sq_c = ((x > sq_c_x1) & (y > sq_c_y1) &
         (x < sq_c_x2) & (y < sq_c_y2)) ? 1 : 0;
 
-    assign VGA_R[3] = sq_a;  // square a is red
-    assign VGA_G[3] = sq_b;  // square b is green
-    assign VGA_B[3] = sq_c;  // square c is blue
+    assign VGA_R_O = {3{sq_a}};  // square a is red
+    assign VGA_G_O = {3{sq_b}};//sq_b;  // square b is green
+    assign VGA_B_O = {2{sq_c}};//sq_c;  // square c is blue
 endmodule
