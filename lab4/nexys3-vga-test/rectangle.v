@@ -7,7 +7,7 @@
 
 endinterface
 
-module square #(
+module rectangle #(
     WIDTH=40,       // half rect width (for ease of co-ordinate calculations)
     HEIGHT=60,      // half rect height 
     IX=D_WIDTH,     // initial horizontal position of square centre
