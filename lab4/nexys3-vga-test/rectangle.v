@@ -3,9 +3,6 @@
 // Learn more at https://timetoexplore.net/blog/arty-fpga-vga-verilog-01
 
 `default_nettype none
-`include "parameters.v"
-
-endinterface
 
 module rectangle #(
     WIDTH=40,       // half rect width (for ease of co-ordinate calculations)
@@ -14,7 +11,6 @@ module rectangle #(
     IY=FLOOR_HEIGHT,// initial vertical position of square centre
     IX_DIR=0,       // initial horizontal direction: 1 is right, 0 is left
     IY_DIR=0,       // initial vertical direction: 1 is down, 0 is up
-    TYPE=0          // 0 is cactus =, 1 is bird
     IX_VEL=1,
     IY_VEL=0,
     )
@@ -28,7 +24,7 @@ module rectangle #(
     output wire [11:0] o_y1,  // square top edge
     output wire [11:0] o_y2   // square bottom edge
     );
-
+`include "parameters.v"
     reg [11:0] x = IX;   // horizontal position of square centre
     reg [11:0] y = IY;   // vertical position of square centre
     reg x_dir = IX_DIR;  // horizontal animation direction
