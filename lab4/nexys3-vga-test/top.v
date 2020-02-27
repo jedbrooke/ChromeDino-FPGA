@@ -43,7 +43,7 @@ module top(
     wire [NUM_OBSTACLES-1:0] pixel_in_obstacle;
     integer i;
 
-    rectangle cactus (
+    obstacle cactus (
         .i_clk(CLK), 
         .i_ani_stb(pix_stb),
         .i_rst(rst),
@@ -54,7 +54,7 @@ module top(
         .o_y2(obstacle_data[0][3])
     );
 
-    rectangle bird #(.IY=BIRD_HEIGHT) (
+    obstacle bird #(.IY=BIRD_HEIGHT) (
         .i_clk(CLK), 
         .i_ani_stb(pix_stb),
         .i_rst(rst),
