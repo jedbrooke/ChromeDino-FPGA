@@ -13,7 +13,7 @@ module top(
     output wire [2:0] VGA_G_O,
 	output wire [1:0] VGA_B_O
     );
-
+`include "parameters.v"
     // wire rst = ~RST_BTN;    // reset is active low on Arty & Nexys Video
     wire rst = RST_BTN;  // reset is active high on Basys3 (BTNC)
 
@@ -21,7 +21,7 @@ module top(
     wire [8:0] y;  // current pixel y position:  9-bit value: 0-511
     wire animate;  // high when we're ready to animate at end of drawing
 
-    reg px_color;
+    wire [7:0] px_color;
 
     // generate a 25 MHz pixel strobe
     reg [15:0] cnt = 0;
@@ -39,33 +39,43 @@ module top(
         .o_y(y),
         .o_animate(animate)
     );
-
-    wire catc_1, sq_b, sq_c;
-    wire [11:0] catc_1_x1, catc_1_x2, catc_1_y1, catc_1_y2;  // 12-bit values: 0-4095 
-    wire [11:0] sq_b_x1, sq_b_x2, sq_b_y1, sq_b_y2;
-    wire [11:0] sq_c_x1, sq_c_x2, sq_c_y1, sq_c_y2;
+    wire [11:0] obstacle_data [0:NUM_OBSTACLES-1][0:3]; // 12-bit values: 0-4095, x1,x2,y1,y2
+    wire [NUM_OBSTACLES-1:0] pixel_in_obstacle;
+    integer i;
 
     rectangle cactus (
         .i_clk(CLK), 
         .i_ani_stb(pix_stb),
         .i_rst(rst),
         .i_animate(animate),
-        .o_x1(catc_1_x1),
-        .o_x2(catc_1_x2),
-        .o_y1(catc_1_y1),
-        .o_y2(catc_1_y2)
+        .o_x1(obstacle_data[0][0]),
+        .o_x2(obstacle_data[0][1]),
+        .o_y1(obstacle_data[0][2]),
+        .o_y2(obstacle_data[0][3])
     );
 
+    rectangle bird #(.IY=BIRD_HEIGHT) (
+        .i_clk(CLK), 
+        .i_ani_stb(pix_stb),
+        .i_rst(rst),
+        .i_animate(animate),
+        .o_x1(obstacle_data[1][0]),
+        .o_x2(obstacle_data[1][1]),
+        .o_y1(obstacle_data[1][2]),
+        .o_y2(obstacle_data[1][3])
+    );
 
+    for (int i = 0; i < NUM_OBSTACLES; i++) begin
+        assign pixel_in_obstacle[i] = ((x > obstacle_data[i][0]) & (y > obstacle_data[i][2]) &
+        (x < obstacle_data[i][1]) & (y < obstacle_data[3])) ? 1 : 0;
+    end
 
-    assign catc_1 = ((x > catc_1_x1) & (y > catc_1_y1) &
-        (x < catc_1_x2) & (y < catc_1_y2)) ? 1 : 0;
-    /*assign sq_b = ((x > sq_b_x1) & (y > sq_b_y1) &
-        (x < sq_b_x2) & (y < sq_b_y2)) ? 1 : 0;
-    assign sq_c = ((x > sq_c_x1) & (y > sq_c_y1) &
-        (x < sq_c_x2) & (y < sq_c_y2)) ? 1 : 0;*/
+    // assign catc_1 = ((x > catc_1_x1) & (y > catc_1_y1) &
+    //     (x < catc_1_x2) & (y < catc_1_y2)) ? 1 : 0;
+    // assign bird_1 = ((x > bird_1_x1) & (y > bird_1_y1) &
+    //     (x < bird_1_x2) & (y < bird_1_y2)) ? 1 : 0;
 
-    assign px_color = (catc_1) ? CACTUS_COLOR : 8'b0;
+    assign px_color = (| pixel_in_obstacle) ? (pixel_in_obstacle[0] ? CACTUS_COLOR : BIRD_COLOR) : 8'b0;
 
     assign VGA_R_O = px_color[7:5];
     assign VGA_G_O = px_color[4:2];
