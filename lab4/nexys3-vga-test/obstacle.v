@@ -12,7 +12,7 @@ module obstacle #(
     IX_DIR=0,       // initial horizontal direction: 1 is right, 0 is left
     IY_DIR=0,       // initial vertical direction: 1 is down, 0 is up
     IX_VEL=1,
-    IY_VEL=0,
+    IY_VEL=0
     )
     (
     input wire i_clk,         // base clock
@@ -49,7 +49,7 @@ module obstacle #(
             x <= (x_dir) ? x + IX_VEL : x - IX_VEL;  // move left if positive x_dir
             y <= (y_dir) ? y + IY_VEL : y - IY_VEL;  // move down if positive y_dir
 
-            if (x <= H_SIZE + 1)  // edge of square is at left of screen
+            if (x <= WIDTH + 1)  // edge of square is at left of screen
                 x <= D_WIDTH + WIDTH;  // move back to the right of the screen
             /*if (x >= (D_WIDTH - H_SIZE - 1))  // edge of square at right
                 x_dir <= 0;  // change direction to left         
