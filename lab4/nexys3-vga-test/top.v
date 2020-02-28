@@ -53,7 +53,7 @@ module top(
         .o_y2(obstacle_data[0][3])
     );
 
-    obstacle #(.IY(BIRD_HEIGHT)) bird (
+    obstacle #(.IY(BIRD_HEIGHT),.WIDTH(20),.HEIGHT(10)) bird (
         .i_clk(CLK), 
         .i_ani_stb(pix_stb),
         .i_rst(rst),
@@ -63,13 +63,14 @@ module top(
         .o_y1(obstacle_data[1][2]),
         .o_y2(obstacle_data[1][3])
     );
-	 genvar i;
-	 generate
-		 for (i = 0; i < NUM_OBSTACLES; i=i+1) begin
-			  assign pixel_in_obstacle[i] = ((x > obstacle_data[i][0]) & (y > obstacle_data[i][2]) &
-			  (x < obstacle_data[i][1]) & (y < obstacle_data[i][3])) ? 1'b1 : 1'b0;
-		 end
-	 endgenerate
+
+    genvar i;
+    generate
+     for (i = 0; i < NUM_OBSTACLES; i=i+1) begin
+        assign pixel_in_obstacle[i] = ((x > obstacle_data[i][0]) & (y > obstacle_data[i][2]) &
+        (x < obstacle_data[i][1]) & (y < obstacle_data[i][3])) ? 1'b1 : 1'b0;
+     end
+    endgenerate
 
     // assign catc_1 = ((x > catc_1_x1) & (y > catc_1_y1) &
     //     (x < catc_1_x2) & (y < catc_1_y2)) ? 1 : 0;
