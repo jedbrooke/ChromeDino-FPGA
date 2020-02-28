@@ -5,8 +5,8 @@
 `default_nettype none
 
 module obstacle #(
-      WIDTH=40,       // half rect width (for ease of co-ordinate calculations)
-      HEIGHT=60,      // half rect height 
+      WIDTH=30,       // half rect width (for ease of co-ordinate calculations)
+      HEIGHT=20,      // half rect height 
       IX=D_WIDTH,     // initial horizontal position of square centre
       IY=FLOOR_HEIGHT,// initial vertical position of square centre
       IX_DIR=0,       // initial horizontal direction: 1 is right, 0 is left

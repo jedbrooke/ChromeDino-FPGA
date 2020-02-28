@@ -4,11 +4,11 @@ parameter D_HEIGHT = 480;
 //colors
 parameter CACTUS_COLOR = 8'b00110100;
 parameter BIRD_COLOR = 8'b11011011;
-parameter FLOOR_COLOR = 8'b11111111;
+parameter FLOOR_COLOR = 8'b0;
 parameter DINO_COLOR = 8'b11100000;
-parameter BG_COLOR = 8'b0;
+parameter BG_COLOR = 8'b11111111;
 //positions
-parameter BIRD_HEIGHT = 120;
+parameter BIRD_HEIGHT = 250;
 parameter FLOOR_HEIGHT = 400;
 //dino data
 parameter DINO_X = 80;
