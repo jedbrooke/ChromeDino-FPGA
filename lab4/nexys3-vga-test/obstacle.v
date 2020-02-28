@@ -60,7 +60,7 @@ module obstacle #(
       end
       if (x <= -(2*WIDTH) - 1) begin  // sqaure is all the way off of the left of screen
          x <= D_WIDTH + WIDTH;  // move back to the right of the screen       
-         wait_timer <= 120;
+         wait_timer <= 511;
       end
    end
 endmodule

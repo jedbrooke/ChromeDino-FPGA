@@ -75,7 +75,7 @@ module top(
         .o_y2(bird_data[0][3])
    );
 	 
-   obstacle #(.IX(FLOOR_POSX),.IY(FLOOR_POSY),.IX_VEL(0),.IY_VEL(0),.WIDTH(D_WIDTH/2),.HEIGHT(D_HEIGHT-FLOOR_POSY)) floor (
+   obstacle #(.IX(D_WIDTH/2),.IY(D_HEIGHT-((D_HEIGHT - FLOOR_HEIGHT)/2)),.IX_VEL(0),.IY_VEL(0),.WIDTH(D_WIDTH/2),.HEIGHT((D_HEIGHT - FLOOR_HEIGHT)/2)) floor (
         .i_clk(CLK), 
         .i_ani_stb(pix_stb),
         .i_rst(rst),
@@ -121,8 +121,19 @@ module top(
    //     (x < catc_1_x2) & (y < catc_1_y2)) ? 1 : 0;
    // assign bird_1 = ((x > bird_1_x1) & (y > bird_1_y1) &
    //     (x < bird_1_x2) & (y < bird_1_y2)) ? 1 : 0;
+	/*
+	always @(posedge pix_stb) begin
+		if(|pixel_in_cactus)
+			px_color = CACTUS_COLOR;
+		if(|pixel_in_bird)
+			px_color = BIRD_COLOR;
+		if(pixel_in_floor)
+			px_color = FLOOR_COLOR;
+	end*/
 
-   assign px_color = (|pixel_in_cactus && CACTUS_COLOR) + (|pixel_in_bird && BIRD_COLOR) + (pixel_in_floor && FLOOR_COLOR) + (pixel_in_dino && DINO_COLOR);
+   assign px_color = ((|pixel_in_cactus) | (|pixel_in_bird) | pixel_in_floor | pixel_in_dino) ? 
+	({8{|pixel_in_cactus}} & CACTUS_COLOR) | ( {8{|pixel_in_bird}} & BIRD_COLOR) | ({8{pixel_in_floor}} & FLOOR_COLOR) | ({8{pixel_in_dino}} & DINO_COLOR) 
+	: BG_COLOR;
    // assign px_color = ((|pixel_in_cactus) | (|pixel_in_bird)) ? (|pixel_in_cactus ? CACTUS_COLOR : BIRD_COLOR) : (pixel_in_floor ? FLOOR_COLOR : BG_COLOR);
 
    assign VGA_R_O = px_color[7:5];
