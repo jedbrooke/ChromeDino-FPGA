@@ -18,7 +18,7 @@ module dinosaur (
     );
 `include "parameters.v"
     reg [11:0] x = DINO_X;   // horizontal position of square centre
-    reg [11:0] y = DINO_Y;   // vertical position of square centre
+    reg [11:0] y = FLOOR_HEIGHT - DINO_HEIGHT;   // vertical position of square centre
     reg [7:0] height;
     reg y_vel;  // vertical animation direction
     reg is_jumping;
@@ -49,6 +49,8 @@ module dinosaur (
             end
             if(i_duck) begin
                 height <= DINO_DUCK_HEIGHT;
+            end else begin
+                height <= DINO_HEIGHT;
             end
         end
     end
