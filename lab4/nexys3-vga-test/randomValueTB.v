@@ -1,3 +1,5 @@
+`timescale 1ns/100ps
+
 module randomValueTB; 
 	reg clk;
 	reg rst;
@@ -13,11 +15,12 @@ module randomValueTB;
 			seed = 0; 
 			rst = 0; 
 			#10 rst = 1; 
-			#10 rst = 0;
+			#300 rst = 0;
+			#1200 $finish;
 		end 
 
 	always 
-	#50 clk = !clk;
+	#50 clk = ~clk;
 	initial begin
 		#100 seed = 4'b0001;
 		load = 1; 
