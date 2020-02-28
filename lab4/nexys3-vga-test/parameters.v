@@ -7,12 +7,11 @@ parameter BIRD_COLOR = 8'b11011011;
 parameter FLOOR_COLOR = 8'b11111111;
 parameter BG_COLOR = 8'b0;
 //positions
-parameter FLOOR_HEIGHT = 400;
 parameter BIRD_HEIGHT = 120;
 parameter FLOOR_HEIGHT = 300;
 parameter BIRD_HEIGHT = 120;
 parameter FLOOR_POSX = 320;
-parameter FLOOR_POSY = 90;
+parameter FLOOR_POSY = 390;
 //dino data
 parameter DINO_X = 80;
 parameter DINO_HEIGHT = 30;
