@@ -12,7 +12,8 @@ module obstacle #(
     IX_DIR=0,       // initial horizontal direction: 1 is right, 0 is left
     IY_DIR=0,       // initial vertical direction: 1 is down, 0 is up
     IX_VEL=1,
-    IY_VEL=0
+    IY_VEL=0,
+	 IWAIT=500
     )
     (
     input wire i_clk,         // base clock
@@ -25,15 +26,21 @@ module obstacle #(
     output wire [11:0] o_y2   // square bottom edge
     );
 `include "parameters.v"
-    reg [11:0] x = IX;   // horizontal position of square centre
+    reg signed [11:0] x = IX;   // horizontal position of square centre
     reg [11:0] y = IY;   // vertical position of square centre
     reg x_dir = IX_DIR;  // horizontal animation direction
     reg y_dir = IY_DIR;  // vertical animation direction
+	 reg rnd_bit = 1;
+	 wire waiting_state;
+	 reg [8:0] wait_timer = IWAIT;
+		
+	 assign waiting_state = wait_timer > 0;
 
     assign o_x1 = x - WIDTH;  // left: centre minus half horizontal size
     assign o_x2 = x + WIDTH;  // right
     assign o_y1 = y - HEIGHT;  // top
     assign o_y2 = y + HEIGHT;  // bottom
+	 
 
     always @ (posedge i_clk)
     begin
@@ -46,18 +53,17 @@ module obstacle #(
         end
         if (i_animate && i_ani_stb)
         begin
-            x <= (x_dir) ? x + IX_VEL : x - IX_VEL;  // move left if positive x_dir
-            y <= (y_dir) ? y + IY_VEL : y - IY_VEL;  // move down if positive y_dir
-
-            if (x <= WIDTH + 1)  // edge of square is at left of screen
-                x <= D_WIDTH + WIDTH;  // move back to the right of the screen
-            /*if (x >= (D_WIDTH - H_SIZE - 1))  // edge of square at right
-                x_dir <= 0;  // change direction to left         
-            if (y <= H_SIZE + 1)  // edge of square at top of screen
-                y_dir <= 1;  // change direction to down
-            if (y >= (D_HEIGHT - H_SIZE - 1))  // edge of square at bottom
-                y_dir <= 0;  // change direction to up     
-            */         
+				if(~waiting_state) begin
+					x <= (x_dir) ? x + IX_VEL : x - (IX_VEL*OBSTACLE_VEL);  // move left if positive x_dir
+					y <= (y_dir) ? y + IY_VEL : y - (IY_VEL*OBSTACLE_VEL);  // move down if positive y_dir
+				end else begin
+					 //get a new rnd_bit
+					 wait_timer <= wait_timer - rnd_bit;
+				end
+            if (x <= -(2*WIDTH) - 1) begin  // sqaure is all the way off of the left of screen
+                x <= D_WIDTH + WIDTH;  // move back to the right of the screen       
+					 wait_timer <= 120;
+				end
         end
     end
 endmodule
