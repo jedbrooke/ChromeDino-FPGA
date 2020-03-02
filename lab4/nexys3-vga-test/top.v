@@ -7,6 +7,8 @@
 module top(
       input wire CLK,             // board clock: 100 MHz on Arty/Basys3/Nexys
       input wire RST_BTN,         // reset button
+		input wire dino_jump,
+	   input wire dino_duck,
       output wire VGA_HS_O,       // horizontal sync output
       output wire VGA_VS_O,       // vertical sync output
       output wire [2:0] VGA_R_O,
@@ -48,10 +50,11 @@ module top(
    wire pixel_in_floor;
    wire pixel_in_dino;
 	
+	
    genvar i;
    generate
       for (i = 0; i < NUM_CACTI; i=i+1) begin
-         obstacle cactus (
+         obstacle #(.WIDTH(11),.HEIGHT(17), .IY(FLOOR_HEIGHT - 15)) cactus (
                .i_clk(CLK), 
                .i_ani_stb(pix_stb),
                .i_rst(rst),
@@ -64,7 +67,7 @@ module top(
    end
    endgenerate
 
-   obstacle #(.IY(BIRD_HEIGHT),.IWAIT(0)) bird (
+   obstacle #(.IY(BIRD_HEIGHT),.HEIGHT(10),.WIDTH(15),.IWAIT(0)) bird (
         .i_clk(CLK), 
         .i_ani_stb(pix_stb),
         .i_rst(rst),
@@ -92,7 +95,9 @@ module top(
         .i_ani_stb(pix_stb),
         .i_rst(rst),
         .i_animate(animate),
-        .o_x1(dino_data[0]),
+		  .i_jump(dino_jump),
+		  .i_duck(dino_duck),
+		  .o_x1(dino_data[0]),
         .o_x2(dino_data[1]),
         .o_y1(dino_data[2]),
         .o_y2(dino_data[3])
