@@ -33,7 +33,7 @@ module dinosaur (
         if (i_rst) // on reset return to starting position
         begin
             x <= DINO_X;
-            y <= 200;//FLOOR_HEIGHT - DINO_HEIGHT;
+            y <= FLOOR_HEIGHT - DINO_HEIGHT;
             y_vel <= 0;
 				is_jumping <= 0;
         end else if (i_animate && i_ani_stb)
