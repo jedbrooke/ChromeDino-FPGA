@@ -1,3 +1,7 @@
 #!/bin/bash
 cd $(dirname $0)
-for f in *.png; do convert $(basename $f) ${f%.*}.bmp; done
+rm *.bmp
+for f in *.png
+do
+	convert $(basename $f) ${f%.*}.bmp
+done
