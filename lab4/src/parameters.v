@@ -25,3 +25,15 @@ parameter NUM_CACTI = 1;
 parameter OBSTACLE_VEL = 5;
 
 //paste sprite data here
+parameter BIRD_IMG_SIZE = 4368;
+parameter BIRD_IMG_WIDTH = 84;
+parameter BIRD_IMG_HEIGHT = 52;
+parameter CACTUS_IMG_SIZE = 4416;
+parameter CACTUS_IMG_WIDTH = 46;
+parameter CACTUS_IMG_HEIGHT = 96;
+parameter DINO_IMG_SIZE = 6880;
+parameter DINO_IMG_WIDTH = 80;
+parameter DINO_IMG_HEIGHT = 86;
+parameter DINO_DUCK_IMG_SIZE = 5720;
+parameter DINO_DUCK_IMG_WIDTH = 110;
+parameter DINO_DUCK_IMG_HEIGHT = 52;
