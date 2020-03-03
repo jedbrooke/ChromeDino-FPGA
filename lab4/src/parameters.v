@@ -7,6 +7,7 @@ parameter BIRD_COLOR = 8'b11011011;
 parameter FLOOR_COLOR = 8'b11111111;
 parameter DINO_COLOR = 8'b11100000;
 parameter BG_COLOR = 8'b0;
+parameter COLOR_DEPTH = 8;
 //positions
 parameter BIRD_HEIGHT = 340;
 parameter FLOOR_HEIGHT = 400;
@@ -22,3 +23,5 @@ parameter DINO_GRAVITY = 2; //positive is down
 parameter NUM_BIRDS = 1;
 parameter NUM_CACTI = 1;
 parameter OBSTACLE_VEL = 5;
+
+//paste sprite data here
