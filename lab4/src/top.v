@@ -13,7 +13,8 @@ module top(
       output wire VGA_VS_O,       // vertical sync output
       output wire [2:0] VGA_R_O,
       output wire [2:0] VGA_G_O,
-      output wire [1:0] VGA_B_O
+      output wire [1:0] VGA_B_O,
+      output wire collision
     );
 `include "parameters.v"
    // wire rst = ~RST_BTN;    // reset is active low on Arty & Nexys Video
@@ -79,7 +80,7 @@ module top(
    );
 	 
    obstacle #(.IX(D_WIDTH/2),.IY(D_HEIGHT-((D_HEIGHT - FLOOR_HEIGHT)/2)),.IX_VEL(0),.IY_VEL(0),.WIDTH(D_WIDTH/2),.HEIGHT((D_HEIGHT - FLOOR_HEIGHT)/2)) floor (
-        .i_clk(CLK), 
+	     .i_clk(CLK), 
         .i_ani_stb(pix_stb),
         .i_rst(rst),
         .i_animate(animate),
@@ -108,41 +109,27 @@ module top(
 		for (j = 0; j < NUM_CACTI; j=j+1) begin
 			assign pixel_in_cactus[j] = ((x > cactus_data[j][0]) & (y > cactus_data[j][2]) &
 			      (x < cactus_data[j][1]) & (y < cactus_data[j][3])) ? 1'b1 : 1'b0;
-		 end
+		end
 	 endgenerate
 	 
 	 genvar k;
 	 generate
-		 for (k = 0; k < NUM_BIRDS; k=k+1) begin
-			  assign pixel_in_bird[k] = ((x > bird_data[k][0]) & (y > bird_data[k][2]) &
-      			(x < bird_data[k][1]) & (y < bird_data[k][3])) ? 1'b1 : 1'b0;
+		for (k = 0; k < NUM_BIRDS; k=k+1) begin
+			assign pixel_in_bird[k] = ((x > bird_data[k][0]) & (y > bird_data[k][2]) &
+				(x < bird_data[k][1]) & (y < bird_data[k][3])) ? 1'b1 : 1'b0;
 		end
 	endgenerate
 	 
 	assign pixel_in_floor = ((x > floor_data[0]) & (y > floor_data[2]) & (x < floor_data[1]) & (y < floor_data[3])) ? 1'b1 : 1'b0;
-   assign pixel_in_dino = ((x > dino_data[0]) & (y > dino_data[2]) & (x < dino_data[1]) & (y < dino_data[3])) ? 1'b1 : 1'b0;
-
-   // assign catc_1 = ((x > catc_1_x1) & (y > catc_1_y1) &
-   //     (x < catc_1_x2) & (y < catc_1_y2)) ? 1 : 0;
-   // assign bird_1 = ((x > bird_1_x1) & (y > bird_1_y1) &
-   //     (x < bird_1_x2) & (y < bird_1_y2)) ? 1 : 0;
-	/*
-	always @(posedge pix_stb) begin
-		if(|pixel_in_cactus)
-			px_color = CACTUS_COLOR;
-		if(|pixel_in_bird)
-			px_color = BIRD_COLOR;
-		if(pixel_in_floor)
-			px_color = FLOOR_COLOR;
-	end*/
+   	assign pixel_in_dino = ((x > dino_data[0]) & (y > dino_data[2]) & (x < dino_data[1]) & (y < dino_data[3])) ? 1'b1 : 1'b0;
 
    assign px_color = ((|pixel_in_cactus) | (|pixel_in_bird) | pixel_in_floor | pixel_in_dino) ? 
 	({8{|pixel_in_cactus}} & CACTUS_COLOR) | ( {8{|pixel_in_bird}} & BIRD_COLOR) | ({8{pixel_in_floor}} & FLOOR_COLOR) | ({8{pixel_in_dino}} & DINO_COLOR) 
 	: BG_COLOR;
-   // assign px_color = ((|pixel_in_cactus) | (|pixel_in_bird)) ? (|pixel_in_cactus ? CACTUS_COLOR : BIRD_COLOR) : (pixel_in_floor ? FLOOR_COLOR : BG_COLOR);
 
-   assign VGA_R_O = px_color[7:5];
-   assign VGA_G_O = px_color[4:2];
-   assign VGA_B_O = px_color[1:0];
+
+	assign VGA_R_O = px_color[7:5];
+	assign VGA_G_O = px_color[4:2];
+	assign VGA_B_O = px_color[1:0];
 	 
 endmodule
