@@ -127,6 +127,7 @@ module top(
 	({8{|pixel_in_cactus}} & CACTUS_COLOR) | ( {8{|pixel_in_bird}} & BIRD_COLOR) | ({8{pixel_in_floor}} & FLOOR_COLOR) | ({8{pixel_in_dino}} & DINO_COLOR) 
 	: BG_COLOR;
 
+	assign collision = pixel_in_dino & (|pixel_in_bird | (|pixel_in_cactus))
 
 	assign VGA_R_O = px_color[7:5];
 	assign VGA_G_O = px_color[4:2];
