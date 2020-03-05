@@ -36,15 +36,15 @@ parameter PLAY_STATE = 2'b10;
 
 //paste sprite data here
 parameter SPRITE_ADDR_WIDTH = 16;
-parameter BIRD_IMG_SIZE = 4368;
-parameter BIRD_IMG_WIDTH = 84;
-parameter BIRD_IMG_HEIGHT = 52;
-parameter CACTUS_IMG_SIZE = 4416;
-parameter CACTUS_IMG_WIDTH = 46;
-parameter CACTUS_IMG_HEIGHT = 96;
-parameter DINO_IMG_SIZE = 6880;
-parameter DINO_IMG_WIDTH = 80;
-parameter DINO_IMG_HEIGHT = 86;
-parameter DINO_DUCK_IMG_SIZE = 5720;
-parameter DINO_DUCK_IMG_WIDTH = 110;
-parameter DINO_DUCK_IMG_HEIGHT = 52;
+parameter BIRD_IMG_SIZE = 2814;
+parameter BIRD_IMG_WIDTH = 67;
+parameter BIRD_IMG_HEIGHT = 42;
+parameter CACTUS_IMG_SIZE = 2849;
+parameter CACTUS_IMG_WIDTH = 37;
+parameter CACTUS_IMG_HEIGHT = 77;
+parameter DINO_IMG_SIZE = 2912;
+parameter DINO_IMG_WIDTH = 52;
+parameter DINO_IMG_HEIGHT = 56;
+parameter DINO_DUCK_IMG_SIZE = 2772;
+parameter DINO_DUCK_IMG_WIDTH = 77;
+parameter DINO_DUCK_IMG_HEIGHT = 36;

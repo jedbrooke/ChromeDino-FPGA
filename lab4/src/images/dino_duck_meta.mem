@@ -1,6 +1,7 @@
-01101110	//sprite width
-00110100	//sprite height
+01001101	//sprite width
+00100100	//sprite height
 //color data:
 10010010
-01111011
-11111111
+01101101
+11011011
+01001001
