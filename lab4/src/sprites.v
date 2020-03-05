@@ -42,7 +42,7 @@ module sprites (
       end
 
       wire [7:0] color_tables [0:3][0:3];
-
+		
       assign color_tables[0][0:3] = dino_meta_raw[2:5];
       assign color_tables[1][0:3] = dino_duck_meta_raw[2:5];
       assign color_tables[2][0:3] = cactus_meta_raw[2:5];
@@ -53,7 +53,7 @@ module sprites (
       reg [7:0] cactus_data;
       reg [7:0] bird_data;
 
-      wire [7:0] data_arr [0:3]
+      wire [7:0] data_arr [0:3];
 
       assign data_arr[0] = dino_data;
       assign data_arr[1] = dino_duck_data;
@@ -65,17 +65,17 @@ module sprites (
          .i_addr(i_addr),
          .o_data(dino_data)
       );
-      srom #(.DEPTH(DINO_DUCK_IMG_SIZE)) dino (
+      srom #(.DEPTH(DINO_DUCK_IMG_SIZE)) dino_duck (
          .i_clk(i_clk),
          .i_addr(i_addr),
          .o_data(dino_duck_data)
       );
-      srom #(.DEPTH(CACTUS_IMG_SIZE)) dino (
+      srom #(.DEPTH(CACTUS_IMG_SIZE)) cactus (
          .i_clk(i_clk),
          .i_addr(i_addr),
          .o_data(cactus_data)
       );
-       srom #(.DEPTH(BIRD_IMG_SIZE)) dino (
+      srom #(.DEPTH(BIRD_IMG_SIZE)) bird (
          .i_clk(i_clk),
          .i_addr(i_addr),
          .o_data(bird_data)
@@ -85,7 +85,7 @@ module sprites (
 
       always @(posedge i_clk) begin
          data = data_arr[i_sel];
-         pixel_color = data[0] ? BG_COLOR : color_tables[i_sel][data[0:1]]
+         pixel_color = data[0] ? BG_COLOR : color_tables[i_sel][data[0:1]];
       end
 	 
 endmodule
