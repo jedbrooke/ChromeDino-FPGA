@@ -43,11 +43,16 @@ module sprites (
 
       wire [7:0] color_tables [0:3][0:3];
 
-      assign color_tables[0][0:3] = dino_meta_raw[2:5];
-      assign color_tables[1][0:3] = dino_duck_meta_raw[2:5];
-      assign color_tables[2][0:3] = cactus_meta_raw[2:5];
-      assign color_tables[3][0:3] = bird_meta_raw[2:5];
-
+      genvar i;
+      generate
+         for (int i = 0; i < 4; i=i+1) begin
+            assign color_tables[0][i] = dino_meta_raw[i+2];
+            assign color_tables[1][i] = dino_duck_meta_raw[i+2];
+            assign color_tables[2][i] = cactus_meta_raw[i+2];
+            assign color_tables[3][i] = bird_meta_raw[i+2];
+         end
+      endgenerate
+      
       reg [7:0] dino_data;
       reg [7:0] dino_duck_data;
       reg [7:0] cactus_data;
