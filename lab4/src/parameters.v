@@ -35,6 +35,7 @@ parameter PLAY_STATE = 2'b10;
 
 
 //paste sprite data here
+parameter SPRITE_ADDR_WIDTH = 16;
 parameter BIRD_IMG_SIZE = 4368;
 parameter BIRD_IMG_WIDTH = 84;
 parameter BIRD_IMG_HEIGHT = 52;
