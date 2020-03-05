@@ -35,8 +35,6 @@ module clk_div(clk, rst, dp_clk, main_clk, adj_clk);
 	parameter main_clk_max = 0;
 	parameter adj_clk_max = 0;
 	*/
-
-`include "stopwatch_definitions.v"
 	 
 	always @(posedge clk) begin
 	if(rst) begin
