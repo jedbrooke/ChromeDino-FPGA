@@ -26,7 +26,7 @@ endmodule
 module sprites (
       input wire i_clk,
       input wire [1:0] i_sel,       //00 is dino, 01 is dino_duck, 10 is cactus, 11 is bird
-      input wire [15:0] i_addr,     //address of memory to read
+      input wire [SPRITE_ADDR_WIDTH-1:0] i_addr,     //address of memory to read
       output reg [7:0] pixel_color
    ); 
       reg [7:0] dino_meta_raw [0:5];
