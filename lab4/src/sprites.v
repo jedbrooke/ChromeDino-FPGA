@@ -45,7 +45,7 @@ module sprites (
 
       genvar i;
       generate
-         for (int i = 0; i < 4; i=i+1) begin
+         for (i = 0; i < 4; i=i+1) begin
             assign color_tables[0][i] = dino_meta_raw[i+2];
             assign color_tables[1][i] = dino_duck_meta_raw[i+2];
             assign color_tables[2][i] = cactus_meta_raw[i+2];
@@ -53,17 +53,12 @@ module sprites (
          end
       endgenerate
 
-      reg [7:0] dino_data;
-      reg [7:0] dino_duck_data;
-      reg [7:0] cactus_data;
-      reg [7:0] bird_data;
+      wire [7:0] dino_data;
+      wire [7:0] dino_duck_data;
+      wire [7:0] cactus_data;
+      wire [7:0] bird_data;
 
       wire [7:0] data_arr [0:3];
-
-      assign data_arr[0] = dino_data;
-      assign data_arr[1] = dino_duck_data;
-      assign data_arr[2] = cactus_data;
-      assign data_arr[3] = bird_data;
 
       srom #(.DEPTH(DINO_IMG_SIZE)) dino (
          .i_clk(i_clk),
@@ -85,12 +80,17 @@ module sprites (
          .i_addr(i_addr),
          .o_data(bird_data)
       );
+		
+		assign data_arr[0] = dino_data;
+      assign data_arr[1] = dino_duck_data;
+      assign data_arr[2] = cactus_data;
+      assign data_arr[3] = bird_data;
 
       reg [2:0] data;
 
       always @(posedge i_clk) begin
-         data = data_arr[i_sel];
-         pixel_color = data[0] ? BG_COLOR : color_tables[i_sel][data[0:1]];
+         data <= data_arr[i_sel];
+         pixel_color <= data[0] ? BG_COLOR : color_tables[i_sel][data[2:1]];
       end
 	 
 endmodule
