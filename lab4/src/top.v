@@ -52,7 +52,7 @@ module top(
       {pix_stb, cnt} <= cnt + 16'h4000;  // divide by 4: (2^16)/4 = 0x4000
 
    wire game_clock;
-   assign game_clock = i_clk & ~dead;
+   assign game_clock = i_clk ;//& ~dead;
 
    vga640x480 display (
         .i_clk(i_clk),
@@ -73,7 +73,7 @@ module top(
                .i_ani_stb(pix_stb),
                .i_rst(rst),
                .i_animate(animate),
-               .i_grace(grace),
+               .i_grace(1'b0),
                .o_x1(cactus_data[i][0]),
                .o_x2(cactus_data[i][1]),
                .o_y1(cactus_data[i][2]),
@@ -89,7 +89,7 @@ module top(
    		     .i_ani_stb(pix_stb),
    		     .i_rst(rst),
    		     .i_animate(animate),
-   		     .i_grace(grace),
+   		     .i_grace(1'b0),
    		     .o_x1(bird_data[i][0]),
    		     .o_x2(bird_data[i][1]),
    		     .o_y1(bird_data[i][2]),
