@@ -19,27 +19,27 @@ module dinosaur (
 `include "parameters.v"
     reg [11:0] x = DINO_X;   // horizontal position of square centre
     reg signed [11:0] y = FLOOR_HEIGHT - DINO_HEIGHT;   // vertical position of square centre
-    reg [7:0] height;
+    reg [7:0] current_height;
     reg signed [15:0] y_vel;  // vertical animation direction
     reg is_jumping;
 
     assign o_x1 = x - DINO_WIDTH;  // left: centre minus half horizontal size
     assign o_x2 = x + DINO_WIDTH;  // right
-    assign o_y1 = y - height;  // top
-    assign o_y2 = y + height;  // bottom
+    assign o_y1 = y - current_height;  // top
+    assign o_y2 = y + current_height;  // bottom
 
     always @ (posedge i_clk) begin
         if (i_rst) begin // on reset return to starting position        
             x <= DINO_X;
-            y <= FLOOR_HEIGHT - DINO_HEIGHT;
-            y_vel <= 0;
+            y <= FLOOR_HEIGHT - DINO_HEIGHT; //Start at top of floor and move up half of dino height
+            y_vel <= 0; 
 			is_jumping <= 0;
         end else if (i_animate && i_ani_stb) begin
 				if(is_jumping) begin
 					y_vel <= y_vel + DINO_GRAVITY;
 					y <= y + y_vel;		
-					if(y > FLOOR_HEIGHT - height) begin
-						y <= FLOOR_HEIGHT - height;
+					if(y > FLOOR_HEIGHT - current_height) begin
+						y <= FLOOR_HEIGHT - current_height;
 						y_vel <= 1'b0;
 						is_jumping <= 1'b0;
 					end
@@ -49,13 +49,22 @@ module dinosaur (
 					y <= y - DINO_JUMP_STRENGTH;
 				end 
 			end else if(i_duck) begin
-				 height <= DINO_DUCK_HEIGHT;
-				 if (y == FLOOR_HEIGHT - DINO_HEIGHT)
-					y <= y + (DINO_HEIGHT - DINO_DUCK_HEIGHT);
+				//If we duck, first maintain our current center point. 
+				//Let's reduce our vertical height by subtracting off some pixels from top and bottom
+				 current_height <= DINO_DUCK_HEIGHT; 
+				 //This will make it look like we just jumped in the air 
+				 //So,we only want to keep the top pixels decremented 
+				 //Let's bring our center y point down by how much we're above the ground
+				 y <= FLOOR_HEIGHT - (DINO_HEIGHT - DINO_DUCK_HEIGHT); 
+				 //if (y == FLOOR_HEIGHT - DINO_HEIGHT)
+					//y <= DINO_HEIGHT - DINO_DUCK_HEIGHT;
 			end else begin
-				if (y == FLOOR_HEIGHT - DINO_DUCK_HEIGHT)
+				//If we're not ducking anymore
+				//Let's make sure that we're back to our standing height and center point.
+				if (y == FLOOR_HEIGHT - (DINO_HEIGHT - DINO_DUCK_HEIGHT))
 					y <= FLOOR_HEIGHT - DINO_HEIGHT;
-				height <= DINO_HEIGHT;
+				//Also make sure that we're back to our normal height
+				current_height <= DINO_HEIGHT;
 			end
     end
 endmodule

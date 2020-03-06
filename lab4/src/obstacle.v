@@ -41,7 +41,7 @@ module obstacle #(
 
    randomValue #(.SEED(SEED)) rand(.i_out(rnd),.i_clk(rnd_clk),.i_rst(1'b0));
 		
-   assign waiting_state = wait_timer > 0;
+   assign waiting_state = wait_timer > 30;
 
    assign o_x1 = x - IWIDTH;  // left: centre minus half horizontal size
    assign o_x2 = x + IWIDTH;  // right
@@ -56,7 +56,7 @@ module obstacle #(
          x_dir <= IX_DIR;
          y_dir <= IY_DIR;
          wait_timer <= IWAIT;
-			rnd_clk <= 0;
+		 rnd_clk <= 0;
       end
       if (i_animate && i_ani_stb) begin
          if(~waiting_state) begin
