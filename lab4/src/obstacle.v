@@ -67,7 +67,7 @@ module obstacle #(
                if (TYPE) begin
                   height <= CACTUS_HEIGHT_MIN + rnd;
                end else begin
-                  y <= BIRD_HEIGHT_MAX - rnd;
+                  y <= BIRD_HEIGHT_MAX - {rnd,2'b0};
                end
             end else begin
                x <= (x_dir) ? x + IX_VEL : x - (IX_VEL*OBSTACLE_VEL);  // move left if positive x_dir
@@ -76,7 +76,7 @@ module obstacle #(
          end else begin
             if (~i_grace) begin
                rnd_clk <= ~rnd_clk;
-               wait_timer <= wait_timer - rnd;
+               wait_timer <= wait_timer - 1'b1;
             end
          end
       end
