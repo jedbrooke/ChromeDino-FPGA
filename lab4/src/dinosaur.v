@@ -54,14 +54,13 @@ module dinosaur (
 				 current_height <= DINO_DUCK_HEIGHT; 
 				 //This will make it look like we just jumped in the air 
 				 //So,we only want to keep the top pixels decremented 
-				 //Let's bring our center y point down by how much we're above the ground
-				 y <= FLOOR_HEIGHT - (DINO_HEIGHT - DINO_DUCK_HEIGHT); 
-				 //if (y == FLOOR_HEIGHT - DINO_HEIGHT)
-					//y <= DINO_HEIGHT - DINO_DUCK_HEIGHT;
+				 //Let's bring our center y point down so that it's aligned with the floor
+				 if (y == FLOOR_HEIGHT - DINO_HEIGHT)
+					y <= FLOOR_HEIGHT - DINO_DUCK_HEIGHT;
 			end else begin
-				//If we're not ducking anymore
+				//If we're not ducking or jumping anymore
 				//Let's make sure that we're back to our standing height and center point.
-				if (y == FLOOR_HEIGHT - (DINO_HEIGHT - DINO_DUCK_HEIGHT))
+				if (y == FLOOR_HEIGHT - DINO_DUCK_HEIGHT)
 					y <= FLOOR_HEIGHT - DINO_HEIGHT;
 				//Also make sure that we're back to our normal height
 				current_height <= DINO_HEIGHT;

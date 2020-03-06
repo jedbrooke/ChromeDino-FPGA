@@ -29,7 +29,7 @@ module obstacle #(
       output wire [11:0] o_y2    // obstacle bottom edge
    );
 `include "parameters.v"
-   reg signed [11:0] x = 0;   // horizontal position of square centre
+   reg signed [11:0] x = IX;   // horizontal position of square centre
    reg [11:0] y = IY;   // vertical position of square centre
    reg x_dir = IX_DIR;  // horizontal animation direction
    reg y_dir = IY_DIR;  // vertical animation direction
@@ -48,6 +48,7 @@ module obstacle #(
    assign o_y1 = y - height;  // top
    assign o_y2 = y + height;  // bottom
 	 
+	 
 
    always @ (posedge i_clk) begin
       if (i_rst) begin // on reset return to starting position
@@ -65,14 +66,11 @@ module obstacle #(
                wait_timer <= (wait_timer > OBSTACLE_WAIT_TIME) ? wait_timer : OBSTACLE_WAIT_TIME; //reset the wait timer
                //re-randomize height
                rnd_clk <= ~rnd_clk;
-               if (TYPE) begin
-                  height <= CACTUS_HEIGHT_MIN + rnd;
-               end else begin
-                  y <= BIRD_HEIGHT_MAX - {rnd[3:0],2'b0};
-               end
+			   height <=  (TYPE) ? height : CACTUS_HEIGHT_MIN + rnd;
+			   y <= (TYPE) ? BIRD_HEIGHT_MAX - {rnd[3:0],2'b0} : y;
             end else begin
                x <= (x_dir) ? x + IX_VEL : x - (IX_VEL*OBSTACLE_VEL);  // move left if positive x_dir
-               y <= (TYPE) ? FLOOR_HEIGHT - height : y;  // move down if positive y_dir
+               y <= (TYPE) ? y : FLOOR_HEIGHT - height;  // move down if positive y_dir
             end
          end else begin
             if (~i_grace) begin

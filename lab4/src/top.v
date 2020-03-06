@@ -3,7 +3,6 @@
 // Learn more at https://timetoexplore.net/blog/arty-fpga-vga-verilog-01
 
 `default_nettype none
-
 module top(
       input wire i_clk,             // board clock: 100 MHz on Arty/Basys3/Nexys
       input wire RST_BTN,           // reset button
@@ -85,7 +84,7 @@ module top(
 	genvar h;
    generate
    	for (h = 0; h < NUM_BIRDS; h=h+1) begin
-   		obstacle #(.IY(BIRD_HEIGHT_MAX),.IHEIGHT(10),.IWIDTH(15),.TYPE(1),.SEED(h+1),.IWAIT((h+1)*OBSTACLE_WAIT_TIME)) bird (
+   		obstacle #(.IY(BIRD_HEIGHT_MAX),.IHEIGHT(10),.IWIDTH(15),.TYPE(1'b1),.SEED(h+1),.IWAIT((h+1)*OBSTACLE_WAIT_TIME + (OBSTACLE_WAIT_TIME / 2))) bird (
    		     .i_clk(game_clock), 
    		     .i_ani_stb(pix_stb),
    		     .i_rst(rst),
@@ -99,12 +98,12 @@ module top(
    	end
    endgenerate
 	 
-   obstacle #(.IX(D_WIDTH/2),.IY(D_HEIGHT-((D_HEIGHT - FLOOR_HEIGHT)/2)),.IX_VEL(0),.IY_VEL(0),.IWIDTH(D_WIDTH/2),.IHEIGHT((D_HEIGHT - FLOOR_HEIGHT)/2),.IWAIT(0)) floor (
-	     .i_clk(game_clock), 
+   obstacle #(.IX(D_WIDTH/2),.IY(D_HEIGHT-((D_HEIGHT - FLOOR_HEIGHT)/2)),.IX_VEL(0),.IY_VEL(0),.IWIDTH(D_WIDTH/2),.IHEIGHT((D_HEIGHT - FLOOR_HEIGHT)/2),.IWAIT(0),.TYPE(1)) floor (
+	    .i_clk(i_clk), 
         .i_ani_stb(pix_stb),
         .i_rst(rst),
         .i_animate(animate),
-		  .i_grace(1'b0),
+		.i_grace(1'b0),
         .o_x1(floor_data[0]),
         .o_x2(floor_data[1]),
         .o_y1(floor_data[2]),
