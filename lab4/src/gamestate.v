@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module gamestate( clk, rst, i_collided, o_nums, o_state)
+module gamestate( clk, rst, i_collided, o_nums, o_state
     );
 
 	/*
@@ -44,33 +44,35 @@ module gamestate( clk, rst, i_collided, o_nums, o_state)
 	
 	parameter grace_period = 150000000; //3000 ms, 3 seconds
 	
-	reg [13:0] grace_counter;
+	reg [27:0] grace_counter;
 	wire score_clk;
 	
 	//state driver
 	always @(posedge clk) begin
-		if (rst)
+		if (rst) begin 
 			o_state <= stGrace;
 			grace_counter <= 14'b0;
-		else
+		end else
 			case (o_state)
 				//stDead <-- stay in dead state
-				stGrace:
+				stGrace: //You can move around for 3 seconds but no obstacles will spawn
 					begin
-						grace_counter <= grace_counter + 1'b1;
-					
 						if (grace_counter == grace_period)
 						begin
-							grace_counter <= 14'b0;
+							grace_counter <= 28'b0;
 							o_state <= stPlay;
 						end
+						else begin
+							grace_counter <= grace_counter + 1'b1;
+						end
 					end
-				stPlay:
+				stPlay: //Check for collision 
 					begin
 						if (i_collided)
 							o_state <= stDead;
 					end
-	end
+				endcase
+	end //End of always
 	
 	//clk divider
 	clk_div clkdiv (
@@ -80,18 +82,28 @@ module gamestate( clk, rst, i_collided, o_nums, o_state)
 	);
 	
 	
-	score_handling score (
-		.clk(score_clk),
+	score_handling #(.play(stPlay)) score (
+		.clk(clk),
+		.score_clk(score_clk),
+		.rst(rst),
+		.state(o_state),
 		.nums(o_nums)
 	);
 		
-	//score handling
-	always @(posedge clk) begin
-		case (o_state)
-			stPlay:
-				begin
-					//keep counting
-				end
-	end
+	// //score handling
+	// always @(posedge clk) begin
+	// 	case (o_state)
+	// 		stPlay:
+	// 			begin
+	// 				//keep counting 
+	// 				pause_state <= 0;
+	// 			end
+	// 		stDead: 
+	// 			begin
+	// 				//stop counting
+	// 				pause_state <= 1;  
+	// 			end
+	// 	endcase 
+	// end
 
 endmodule

@@ -18,58 +18,40 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module clk_div(clk, rst, dp_clk, main_clk, adj_clk);
-
+module clk_div(clk, rst, score_clk);
 	input clk;
 	input rst;
-	output reg dp_clk = 0;
-	output reg main_clk = 0;
-	output reg adj_clk = 0;
-	
-	reg [16:0] dp_reg = 0;
-	reg [25:0] main_reg = 0;
-	reg [25:0] adj_reg = 0;
+	output reg score_clk;
+
+	reg [22:0] score_reg = 0; 
 	
 	/*
 	parameter dp_clk_max = 0;
 	parameter main_clk_max = 0;
 	parameter adj_clk_max = 0;
 	*/
+
+	parameter score_clk_max = 5000000; //20 Hz
 	 
 	always @(posedge clk) begin
-	if(rst) begin
-		//dp_reg <= 0;
-		main_reg <= 0;
-		adj_reg <= 0;
-		//dp_clk <= 0;
-		main_clk <= 0;
-		adj_clk <= 0;
-	end
-
-	else begin
-		if (dp_reg == dp_clk_max) begin
-			dp_reg <= 0;
-			dp_clk <= ~dp_clk;
-		end
-		else begin
-			dp_reg <= dp_reg + 1'b1;
-		end
-		
-		if (main_reg == main_clk_max) begin
-			main_reg <= 0;
-			main_clk <= ~main_clk;
-		end
-		else begin
-			main_reg <= main_reg + 1'b1;
+		if(rst) begin
+			score_reg <= 0; 
+			score_clk <= 0; 
 		end
 
-		if (adj_reg == adj_clk_max) begin
-			adj_reg <= 0;
-			adj_clk <= ~adj_clk;
-		end
 		else begin
-			adj_reg <= adj_reg + 1'b1;
-		end
-	end
+			if (score_reg == score_clk_max) begin
+				score_reg <= 0;
+				score_clk <= 1'b1;
+			end
+			else begin
+				score_reg <= score_reg + 1'b1;
 
+				if (score_clk == 1'b1) begin
+					score_clk <= 1'b0;
+				end
+
+			end 
+		end //End of outer else
+	end //End of always 
 endmodule
