@@ -81,19 +81,20 @@ module top(
          );
    end
    endgenerate
-
+	
+	genvar h;
    generate
-   	for (i = 0; i < NUM_BIRDS; i=i+1) begin
-   		obstacle #(.IY(BIRD_HEIGHT_MAX),.IHEIGHT(10),.IWIDTH(15),.IWAIT(0),.TYPE(1),.SEED(i[3:0])) bird (
+   	for (h = 0; h < NUM_BIRDS; h=h+1) begin
+   		obstacle #(.IY(BIRD_HEIGHT_MAX),.IHEIGHT(10),.IWIDTH(15),.TYPE(1),.SEED(h[3:0]),.IWAIT((h+1)*OBSTACLE_WAIT_TIME)) bird (
    		     .i_clk(game_clock), 
    		     .i_ani_stb(pix_stb),
    		     .i_rst(rst),
    		     .i_animate(animate),
    		     .i_grace(1'b0),
-   		     .o_x1(bird_data[i][0]),
-   		     .o_x2(bird_data[i][1]),
-   		     .o_y1(bird_data[i][2]),
-   		     .o_y2(bird_data[i][3])
+   		     .o_x1(bird_data[h][0]),
+   		     .o_x2(bird_data[h][1]),
+   		     .o_y1(bird_data[h][2]),
+   		     .o_y2(bird_data[h][3])
    		);
    	end
    endgenerate
