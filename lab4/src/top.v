@@ -45,7 +45,7 @@ module top(
 
 	assign dead = (game_state == DEAD_STATE) ? 1'b1 : 1'b0;
 	assign grace = (game_state == GRACE_STATE) ? 1'b1 : 1'b0;
-	assign play = (game_state == PLAY_STATE) ? 1'b1, : 1'b0;
+	assign play = (game_state == PLAY_STATE) ? 1'b1 : 1'b0;
 
 
    always @(posedge i_clk)
@@ -73,7 +73,7 @@ module top(
                .i_ani_stb(pix_stb),
                .i_rst(rst),
                .i_animate(animate),
-               .i_grace(grace)
+               .i_grace(grace),
                .o_x1(cactus_data[i][0]),
                .o_x2(cactus_data[i][1]),
                .o_y1(cactus_data[i][2]),
@@ -83,13 +83,13 @@ module top(
    endgenerate
 
    generate
-   	for (int i = 0; i < NUM_BIRDS; i=i+1) begin
-   		obstacle #(.IY(BIRD_HEIGHT),.HEIGHT(10),.WIDTH(15),.IWAIT(0),.TYPE(1),.SEED(i[3:0])) bird (
+   	for (i = 0; i < NUM_BIRDS; i=i+1) begin
+   		obstacle #(.IY(BIRD_HEIGHT_MAX),.IHEIGHT(10),.IWIDTH(15),.IWAIT(0),.TYPE(1),.SEED(i[3:0])) bird (
    		     .i_clk(game_clock), 
    		     .i_ani_stb(pix_stb),
    		     .i_rst(rst),
    		     .i_animate(animate),
-   		     .i_grace(bird),
+   		     .i_grace(grace),
    		     .o_x1(bird_data[i][0]),
    		     .o_x2(bird_data[i][1]),
    		     .o_y1(bird_data[i][2]),
@@ -98,7 +98,7 @@ module top(
    	end
    endgenerate
 	 
-   obstacle #(.IX(D_WIDTH/2),.IY(D_HEIGHT-((D_HEIGHT - FLOOR_HEIGHT)/2)),.IX_VEL(0),.IY_VEL(0),.WIDTH(D_WIDTH/2),.HEIGHT((D_HEIGHT - FLOOR_HEIGHT)/2)) floor (
+   obstacle #(.IX(D_WIDTH/2),.IY(D_HEIGHT-((D_HEIGHT - FLOOR_HEIGHT)/2)),.IX_VEL(0),.IY_VEL(0),.IWIDTH(D_WIDTH/2),.IHEIGHT((D_HEIGHT - FLOOR_HEIGHT)/2)) floor (
 	     .i_clk(game_clock), 
         .i_ani_stb(pix_stb),
         .i_rst(rst),
@@ -146,7 +146,7 @@ module top(
 	({8{|pixel_in_cactus}} & CACTUS_COLOR) | ( {8{|pixel_in_bird}} & BIRD_COLOR) | ({8{pixel_in_floor}} & FLOOR_COLOR) | ({8{pixel_in_dino}} & DINO_COLOR) 
 	: BG_COLOR;
 
-	assign collision = pixel_in_dino & (|pixel_in_bird | (|pixel_in_cactus))
+	assign collision = pixel_in_dino & (|pixel_in_bird | (|pixel_in_cactus));
 
 	assign VGA_R_O = px_color[7:5];
 	assign VGA_G_O = px_color[4:2];

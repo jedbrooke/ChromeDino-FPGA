@@ -59,7 +59,7 @@ module obstacle #(
       end
       if (i_animate && i_ani_stb) begin
          if(~waiting_state) begin
-            if (x <= -(2*WIDTH) - 1) begin  // obstacle is all the way off of the left of screen
+            if (x <= -(2*IWIDTH) - 1) begin  // obstacle is all the way off of the left of screen
                x <= D_WIDTH + IWIDTH;  // move back to the right of the screen       
                wait_timer <= (wait_timer > OBSTACLE_WAIT_TIME) ? wait_timer : OBSTACLE_WAIT_TIME; //reset the wait timer
                //re-randomize height
