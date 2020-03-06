@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module gamestate( clk, rst, i_collided, o_nums, o_state
+module gamestate( clk, rst, i_collided, score_clk, o_nums, o_state,
     );
 
 	/*
@@ -35,6 +35,7 @@ module gamestate( clk, rst, i_collided, o_nums, o_state
 	input clk;
 	input rst;
 	input i_collided;
+	input wire score_clk;
 	output [15:0] o_nums;
 	output reg [1:0] o_state;
 	
@@ -45,7 +46,7 @@ module gamestate( clk, rst, i_collided, o_nums, o_state
 	parameter grace_period = 150000000; //3000 ms, 3 seconds
 	
 	reg [27:0] grace_counter;
-	wire score_clk;
+	
 	
 	//state driver
 	always @(posedge clk) begin
@@ -74,12 +75,7 @@ module gamestate( clk, rst, i_collided, o_nums, o_state
 				endcase
 	end //End of always
 	
-	//clk divider
-	clk_div clkdiv (
-		.clk(clk),
-		.rst(rst),
-		.score_clk(score_clk)
-	);
+	
 	
 	
 	score_handling #(.play(stPlay)) score (
