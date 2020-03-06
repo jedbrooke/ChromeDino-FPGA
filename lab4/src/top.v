@@ -42,6 +42,7 @@ module top(
 	wire grace;
 	wire play;
 
+	parameter dp_offset = 20; 
 	assign dead = (game_state == DEAD_STATE) ? 1'b1 : 1'b0;
 	assign grace = (game_state == GRACE_STATE) ? 1'b1 : 1'b0;
 	assign play = (game_state == PLAY_STATE) ? 1'b1 : 1'b0;
@@ -67,7 +68,7 @@ module top(
    genvar i;
    generate
       for (i = 0; i < NUM_CACTI; i=i+1) begin
-         obstacle #(.IX(D_WIDTH+20), .SEED(i + 1),.IWAIT((i+1)*OBSTACLE_WAIT_TIME),.TYPE(0)) cactus (
+         obstacle #(.IX(D_WIDTH+dp_offset), .SEED(i + 1),.IWAIT((i+1)*OBSTACLE_WAIT_TIME),.TYPE(0)) cactus (
                .i_clk(game_clock), 
                .i_ani_stb(pix_stb),
                .i_rst(rst),
@@ -84,7 +85,7 @@ module top(
 	genvar h;
    generate
    	for (h = 0; h < NUM_BIRDS; h=h+1) begin
-   		obstacle #(.IX(D_WIDTH+20),.IY(BIRD_HEIGHT_MAX),.IHEIGHT(10),.IWIDTH(15),.TYPE(1'b1),.SEED(h+1),.IWAIT((h+1)*OBSTACLE_WAIT_TIME + (OBSTACLE_WAIT_TIME / 2))) bird (
+   		obstacle #(.IX(D_WIDTH+dp_offset),.IY(BIRD_HEIGHT_MAX),.IHEIGHT(10),.IWIDTH(15),.TYPE(1'b1),.SEED(h+1),.IWAIT((h+1)*OBSTACLE_WAIT_TIME + (OBSTACLE_WAIT_TIME / 2))) bird (
    		     .i_clk(game_clock), 
    		     .i_ani_stb(pix_stb),
    		     .i_rst(rst),
