@@ -62,11 +62,13 @@ module obstacle #(
       if (i_animate && i_ani_stb) begin
          if(~waiting_state) begin
             if (x <= -(2*IWIDTH) - 1) begin  // obstacle is all the way off of the left of screen
-               x <= D_WIDTH + IWIDTH;  // move back to the right of the screen       
+               x <= IX + IWIDTH;  // move back to the right of the screen       
                wait_timer <= (wait_timer > OBSTACLE_WAIT_TIME) ? wait_timer : OBSTACLE_WAIT_TIME; //reset the wait timer
                //re-randomize height
                rnd_clk <= ~rnd_clk;
+			   //Randomize size heights of cacti
 			   height <=  (TYPE) ? height : CACTUS_HEIGHT_MIN + rnd;
+			   //Randomize positional heights of birds
 			   y <= (TYPE) ? BIRD_HEIGHT_MAX - {rnd[3:0],2'b0} : y;
             end else begin
                x <= (x_dir) ? x + IX_VEL : x - (IX_VEL*OBSTACLE_VEL);  // move left if positive x_dir
