@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 10ns / 1ns
 
 ////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -37,8 +37,9 @@ module vga_test;
 
 	// Instantiate the Unit Under Test (UUT)
 	top uut (
-		.CLK(CLK), 
+		.i_clk(CLK), 
 		.RST_BTN(RST_BTN), 
+		.game_state(2'b10),
 		.VGA_HS_O(VGA_HS_O), 
 		.VGA_VS_O(VGA_VS_O), 
 		.VGA_R_O(VGA_R_O), 
@@ -52,14 +53,17 @@ module vga_test;
 		RST_BTN = 0;
 
 		// Wait 100 ns for global reset to finish
-		#100;
+		#10;
+		
+		#100 RST_BTN = 1'b1;
+		#1000 RST_BTN = 1'b0;
         
 		// Add stimulus here
-		#1000000000 $finish;
+		#100000000 $finish;
 
 	end
 	
-always #5 CLK = ~CLK;
+always #0.5 CLK = ~CLK;
       
 endmodule
 

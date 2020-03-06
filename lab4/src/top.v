@@ -52,7 +52,7 @@ module top(
       {pix_stb, cnt} <= cnt + 16'h4000;  // divide by 4: (2^16)/4 = 0x4000
 
    wire game_clock;
-   assign game_clock = i_clk ;//& ~dead;
+   assign game_clock = i_clk & ~dead;
 
    vga640x480 display (
         .i_clk(i_clk),
@@ -68,12 +68,12 @@ module top(
    genvar i;
    generate
       for (i = 0; i < NUM_CACTI; i=i+1) begin
-         obstacle #(.SEED(i[3:0]),.IWAIT((i+1)*OBSTACLE_WAIT_TIME),.TYPE(0)) cactus (
+         obstacle #(.SEED(i + 1),.IWAIT((i+1)*OBSTACLE_WAIT_TIME),.TYPE(0)) cactus (
                .i_clk(game_clock), 
                .i_ani_stb(pix_stb),
                .i_rst(rst),
                .i_animate(animate),
-               .i_grace(1'b0),
+               .i_grace(grace),
                .o_x1(cactus_data[i][0]),
                .o_x2(cactus_data[i][1]),
                .o_y1(cactus_data[i][2]),
@@ -85,12 +85,12 @@ module top(
 	genvar h;
    generate
    	for (h = 0; h < NUM_BIRDS; h=h+1) begin
-   		obstacle #(.IY(BIRD_HEIGHT_MAX),.IHEIGHT(10),.IWIDTH(15),.TYPE(1),.SEED(h[3:0]),.IWAIT((h+1)*OBSTACLE_WAIT_TIME)) bird (
+   		obstacle #(.IY(BIRD_HEIGHT_MAX),.IHEIGHT(10),.IWIDTH(15),.TYPE(1),.SEED(h+1),.IWAIT((h+1)*OBSTACLE_WAIT_TIME)) bird (
    		     .i_clk(game_clock), 
    		     .i_ani_stb(pix_stb),
    		     .i_rst(rst),
    		     .i_animate(animate),
-   		     .i_grace(1'b0),
+   		     .i_grace(grace),
    		     .o_x1(bird_data[h][0]),
    		     .o_x2(bird_data[h][1]),
    		     .o_y1(bird_data[h][2]),
@@ -104,6 +104,7 @@ module top(
         .i_ani_stb(pix_stb),
         .i_rst(rst),
         .i_animate(animate),
+		  .i_grace(1'b0),
         .o_x1(floor_data[0]),
         .o_x2(floor_data[1]),
         .o_y1(floor_data[2]),

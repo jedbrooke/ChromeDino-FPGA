@@ -12,7 +12,8 @@ begin
 	#15; 
 	
 	rst_tb = 0; 
-	#200; 
+	#200;
+	#10000 $finish;
 end 
 
 always

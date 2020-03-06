@@ -51,7 +51,7 @@ module dinosaur (
 			end else if(i_duck) begin
 				 height <= DINO_DUCK_HEIGHT;
 				 if (y == FLOOR_HEIGHT - DINO_HEIGHT)
-					y <= y + ((DINO_HEIGHT - DINO_DUCK_HEIGHT) / 2);
+					y <= y + (DINO_HEIGHT - DINO_DUCK_HEIGHT);
 			end else begin
 				if (y == FLOOR_HEIGHT - DINO_DUCK_HEIGHT)
 					y <= FLOOR_HEIGHT - DINO_HEIGHT;

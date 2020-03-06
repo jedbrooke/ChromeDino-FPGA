@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps 
 
 module randomValue #(SEED=4'b0001)(i_out,i_clk,i_rst); 
-output reg [3:0] i_out; 
+output reg [3:0] i_out = SEED; 
 input i_clk,i_rst; 
 
 wire randomBit; 
