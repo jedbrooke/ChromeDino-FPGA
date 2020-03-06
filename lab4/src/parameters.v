@@ -22,8 +22,8 @@ parameter DINO_JUMP_STRENGTH = 16'd15;
 parameter DINO_GRAVITY = 1; //positive is down
 
 //game data
-parameter NUM_BIRDS = 1;
-parameter NUM_CACTI = 1;
+parameter NUM_BIRDS = 4;
+parameter NUM_CACTI = 4;
 parameter OBSTACLE_VEL = 5;
 parameter OBSTACLE_WAIT_TIME = 500;
 parameter CACTUS_HEIGHT_MIN = 15;
