@@ -20,6 +20,7 @@ parameter DINO_DUCK_HEIGHT = 20;
 parameter DINO_WIDTH = 20;
 parameter DINO_JUMP_STRENGTH = 16'd17;
 parameter DINO_GRAVITY = 1; //positive is down
+parameter DINO_FASTFALL = 1;
 
 //game data
 parameter NUM_BIRDS = 4;

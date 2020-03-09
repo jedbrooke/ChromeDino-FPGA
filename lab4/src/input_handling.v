@@ -18,23 +18,15 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module input_handling(clk,btnR,btnJ,btnD,o_rst,o_jump, o_duck);
+module input_handling(clk,btnJ,btnD,o_jump,o_duck);
 
 	input clk;
-	input btnR;
 	input btnJ;
 	input btnD;
 
-	output o_rst;
 	output o_jump;
 	output o_duck;
 	
-	debouncer dbR (
-	 .i_clk(clk),
-	 .i_btn(btnR),
-	 .o_btn_state(o_rst)
-	);
-	 
 	debouncer dbJ (
 	 .i_clk(clk),
 	 .i_btn(btnJ),
@@ -46,5 +38,14 @@ module input_handling(clk,btnR,btnJ,btnD,o_rst,o_jump, o_duck);
 	 .i_btn(btnD),
 	 .o_btn_state(o_duck)
 	);
+	
+	/*
+	debouncer dbR (
+	 .i_clk(clk),
+	 .i_btn(btnR),
+	 .o_btn_state(o_rst)
+	);
+	*/ 
+
 
 endmodule

@@ -18,14 +18,16 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module clk_div(clk, rst, score_clk, dp_clk);
+module clk_div(clk, rst, score_clk, dp_clk, blink_clk);
 	input clk;
 	input rst;
 	output reg score_clk;
 	output reg dp_clk;
+	output reg blink_clk;
 
 	reg [22:0] score_reg = 0; 
 	reg [19:0] dp_reg = 0;
+	reg [25:0] blink_reg = 0;
 	
 	/*
 	parameter dp_clk_max = 0;
@@ -35,6 +37,7 @@ module clk_div(clk, rst, score_clk, dp_clk);
 
 	parameter score_clk_max = 5000000; //20 Hz
 	parameter dp_clk_max = 200000; //100 Hz
+	parameter blink_clk_max = 50000000; //2 Hz
 	 
 	always @(posedge clk) begin
 		if(rst) begin
@@ -64,6 +67,17 @@ module clk_div(clk, rst, score_clk, dp_clk);
 
 				if (dp_clk == 1'b1) begin
 					dp_clk <= 1'b0;
+				end
+			end
+			if (blink_reg == blink_clk_max) begin
+				blink_reg <= 0;
+				blink_clk <= 1'b1;
+			end
+			else begin
+				blink_reg <= blink_reg + 1'b1;
+
+				if (blink_clk == 1'b1) begin
+					blink_clk <= 1'b0;
 				end
 			end 
 		end //End of outer else

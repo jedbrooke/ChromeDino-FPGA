@@ -9,6 +9,7 @@ module top(
       input wire dino_jump,
       input wire dino_duck,
       input wire [1:0] game_state,
+		input wire super_secret_switch, //secret switch for secrets
       output wire VGA_HS_O,         // horizontal sync output
       output wire VGA_VS_O,         // vertical sync output
       output wire [2:0] VGA_R_O,

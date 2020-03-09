@@ -9,7 +9,7 @@ module decode_7seg(
 
     
 	
-	 always @(val or num_disable) begin
+	 always @(*) begin
 			if(num_disable) begin
 				cats <= 7'b000000;
 			end else begin
