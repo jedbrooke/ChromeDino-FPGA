@@ -18,14 +18,16 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module clk_div(clk, rst, score_clk, dp_clk, blink_clk);
+module clk_div(clk, rst, score_clk, dp_clk, blink_clk, fast_score_clk);
 	input clk;
 	input rst;
 	output reg score_clk;
 	output reg dp_clk;
 	output reg blink_clk;
+	output reg fast_score_clk;
 
 	reg [22:0] score_reg = 0; 
+	reg [22:0] fast_score_reg = 0; 
 	reg [19:0] dp_reg = 0;
 	reg [25:0] blink_reg = 0;
 	
@@ -36,6 +38,7 @@ module clk_div(clk, rst, score_clk, dp_clk, blink_clk);
 	*/
 
 	parameter score_clk_max = 5000000; //20 Hz
+	parameter fast_score_clk_max = 100000; //100 Hz
 	parameter dp_clk_max = 200000; //100 Hz
 	parameter blink_clk_max = 50000000; //2 Hz
 	 
@@ -43,6 +46,15 @@ module clk_div(clk, rst, score_clk, dp_clk, blink_clk);
 		if(rst) begin
 			score_reg <= 0; 
 			score_clk <= 0; 
+			
+			dp_reg <= 0;
+			dp_clk <= 0;
+			
+			fast_score_reg <= 0;
+			fast_score_clk <= 0;
+			
+			blink_reg <= 0;
+			blink_clk <= 0;
 		end
 
 		else begin
@@ -80,6 +92,19 @@ module clk_div(clk, rst, score_clk, dp_clk, blink_clk);
 					blink_clk <= 1'b0;
 				end
 			end 
+			
+			if (fast_score_reg == fast_score_clk_max) begin
+				fast_score_reg <= 0;
+				fast_score_clk <= 1'b1;
+			end
+			else begin
+				fast_score_reg <= fast_score_reg + 1'b1;
+
+				if (fast_score_clk == 1'b1) begin
+					fast_score_clk <= 1'b0;
+				end
+
+			end
 		end //End of outer else
 	end //End of always 
 endmodule

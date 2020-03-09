@@ -11,6 +11,7 @@ module dinosaur (
     input wire i_animate,     // animate when input is high
     input wire i_jump,        // jump button is pressed
     input wire i_duck,        // duck button is pressed
+	input wire i_sss,
     output wire [11:0] o_x1,  // square left edge: 12-bit value: 0-4095
     output wire [11:0] o_x2,  // square right edge
     output wire [11:0] o_y1,  // square top edge
@@ -23,15 +24,16 @@ module dinosaur (
     reg [7:0] current_height;
     reg signed [15:0] y_vel;  // vertical animation direction
     reg is_jumping;
-	 wire [3:0] dino_fastfall;
+	wire [3:0] dino_fastfall;
+	wire [15:0] dino_jump_strength;
 
     assign o_x1 = x - DINO_WIDTH;  // left: centre minus half horizontal size
     assign o_x2 = x + DINO_WIDTH;  // right
     assign o_y1 = y - current_height;  // top
     assign o_y2 = y + current_height;  // bottom
 	 
-	 assign dino_fastfall = i_duck ? DINO_FASTFALL : 4'b0;
-	 
+	assign dino_fastfall = i_duck ? DINO_FASTFALL : 4'b0;
+	assign dino_jump_strength = i_sss ? DINO_ULTRA_JUMP_STRENGTH : DINO_REG_JUMP_STRENGTH;
 
     always @ (posedge i_clk) begin
         if (i_rst) begin // on reset return to starting position        
@@ -63,8 +65,8 @@ module dinosaur (
 			end //End of is_jumping 
 			else if(i_jump) begin
 				is_jumping <= 1'b1;
-				y_vel <= -DINO_JUMP_STRENGTH;
-				y <= y - DINO_JUMP_STRENGTH;
+				y_vel <= -dino_jump_strength;
+				y <= y - dino_jump_strength;
 			end //End of i_jump
 
 			//Error: There was an end here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

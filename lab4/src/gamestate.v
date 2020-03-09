@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module gamestate( clk, rst, i_collided, score_clk, o_nums, o_state,
+module gamestate( clk, rst, i_collided, i_sss2, score_clk, fast_score_clk, o_nums, o_state,
     );
 
 	/*
@@ -36,6 +36,8 @@ module gamestate( clk, rst, i_collided, score_clk, o_nums, o_state,
 	input rst;
 	input i_collided;
 	input wire score_clk;
+	input wire fast_score_clk;
+	input wire i_sss2;
 	output [15:0] o_nums;
 	output reg [1:0] o_state;
 	
@@ -47,6 +49,9 @@ module gamestate( clk, rst, i_collided, score_clk, o_nums, o_state,
 	
 	reg [27:0] grace_counter;
 	
+	wire used_score_clk;
+	
+	assign used_score_clk = i_sss2 ? fast_score_clk : score_clk;
 	
 	//state driver
 	always @(posedge clk) begin
@@ -80,7 +85,7 @@ module gamestate( clk, rst, i_collided, score_clk, o_nums, o_state,
 	
 	score_handling #(.play(stPlay)) score (
 		.clk(clk),
-		.score_clk(score_clk),
+		.score_clk(used_score_clk),
 		.rst(rst),
 		.state(o_state),
 		.nums(o_nums)

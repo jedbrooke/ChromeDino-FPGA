@@ -120,6 +120,7 @@ module top(
         .i_animate(animate),
 		  .i_jump(dino_jump),
 		  .i_duck(dino_duck),
+		  .i_sss(super_secret_switch),
 		  .o_x1(dino_data[0]),
         .o_x2(dino_data[1]),
         .o_y1(dino_data[2]),

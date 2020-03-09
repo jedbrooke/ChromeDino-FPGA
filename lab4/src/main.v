@@ -24,6 +24,7 @@ module main(
       input wire dino_jump,
       input wire dino_duck,
 		input wire super_secret_switch,		//super secret switch
+		input wire super_secret_switch2,
 	  output wire VGA_HS_O,         // horizontal sync output
       output wire VGA_VS_O,         // vertical sync output
       output wire [2:0] VGA_R_O,
@@ -41,14 +42,15 @@ module main(
 	wire score_clk;
 	wire dp_clk;
 	wire blink_clk;
-	
-	
+	wire fast_score_clk;
 	 
 	gamestate gs (
 		.clk(i_clk),
 		.rst(RST_BTN),
 		.i_collided(collided),
+		.i_sss2(super_secret_switch2),
 		.score_clk(score_clk),
+		.fast_score_clk(fast_score_clk),
 		.o_nums(nums),
 		.o_state(state)
 	);
@@ -74,7 +76,8 @@ module main(
 		.rst(RST_BTN),
 		.score_clk(score_clk),
 		.dp_clk(dp_clk),
-		.blink_clk(blink_clk)
+		.blink_clk(blink_clk),
+		.fast_score_clk(fast_score_clk)
 	);
 	
 	gpu gpu(
