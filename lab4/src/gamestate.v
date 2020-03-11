@@ -1,6 +1,13 @@
 `timescale 1ns / 1ps
 
-module gamestate(
+module gamestate #(
+		stDead = 0,
+		stGrace = 1,
+		stPlay = 2,
+		grace_period = 150000000 //3000 ms, 3 seconds
+	)
+
+	(
     input clk,
 	input rst,
 	input i_collided,
@@ -22,12 +29,6 @@ module gamestate(
 		if collide, move to "dead" state
 			dinosaurs and obstacles should NOT be moving; counter should be STOPPED/BLINKING
 	*/
-	
-	parameter stDead = 0;
-	parameter stGrace = 1;
-	parameter stPlay = 2;
-	
-	parameter grace_period = 150000000; //3000 ms, 3 seconds
 	
 	reg [27:0] grace_counter;
 	

@@ -7,7 +7,7 @@
 
 module game_management (
   input wire i_clk,             // Board Clock: 100 MHz on Arty/Basys3/Nexys
-  input wire RST_BTN,           // Reset Button
+  input wire rst,           // Reset Button
   input wire dino_jump,	    // Dino Jump Button 
   input wire dino_duck,	    // Dino Duck Button 
 	input wire [1:0] game_state,  //Three possible game states 
@@ -22,8 +22,6 @@ module game_management (
 
 `include "parameters.v"
   
-  wire rst = RST_BTN;  // reset is active high on Basys3 (BTNC)
-
   wire [9:0] x;  // current pixel x position: 10-bit value: 0-1023
   wire [8:0] y;  // current pixel y position:  9-bit value: 0-511
   wire animate;  // high when we're ready to animate at end of drawing
@@ -104,7 +102,7 @@ module game_management (
   genvar i;
   generate
     for (i = 0; i < NUM_CACTI; i=i+1) begin
-        obstacle #(.IX(D_WIDTH+dp_offset), .SEED(i + 1),.IWAIT((i+1)*OBSTACLE_WAIT_TIME),.TYPE(0)) cactus (
+        obstacle #(.IX(D_WIDTH+dp_offset), .SEED(i + 1),.IWAIT((i+1)*OBSTACLE_WAIT_TIME),.TYPE(0),.OBSTACLE_WAIT_TIME(OBSTACLE_WAIT_TIME),.OBSTACLE_VEL(OBSTACLE_VEL),.CACTUS_HEIGHT_MIN(CACTUS_HEIGHT_MIN),.CACTUS_HEIGHT_MAX(CACTUS_HEIGHT_MAX),.FLOOR_HEIGHT(FLOOR_HEIGHT),.BIRD_HEIGHT_MAX(BIRD_HEIGHT_MAX)) cactus (
           .i_clk(game_clock), 
           .i_ani_stb(pix_stb),
           .i_rst(rst),
@@ -134,7 +132,7 @@ module game_management (
 	genvar h;
     generate
    	  for (h = 0; h < NUM_BIRDS; h=h+1) begin
-        obstacle #(.IX(D_WIDTH+dp_offset),.IY(BIRD_HEIGHT_MAX),.IHEIGHT(10),.IWIDTH(15),.TYPE(1'b1),.SEED(h+1),.IWAIT((h+1)*OBSTACLE_WAIT_TIME + (OBSTACLE_WAIT_TIME / 2))) bird (
+        obstacle #(.IX(D_WIDTH+dp_offset),.IY(BIRD_HEIGHT_MAX),.IHEIGHT(10),.IWIDTH(15),.TYPE(1'b1),.SEED(h+1),.IWAIT((h+1)*OBSTACLE_WAIT_TIME + (OBSTACLE_WAIT_TIME / 2)),.OBSTACLE_WAIT_TIME(OBSTACLE_WAIT_TIME),.OBSTACLE_VEL(OBSTACLE_VEL),.CACTUS_HEIGHT_MIN(CACTUS_HEIGHT_MIN),.CACTUS_HEIGHT_MAX(CACTUS_HEIGHT_MAX),.FLOOR_HEIGHT(FLOOR_HEIGHT),.BIRD_HEIGHT_MAX(BIRD_HEIGHT_MAX)) bird (
           .i_clk(game_clock), 
           .i_ani_stb(pix_stb),
           .i_rst(rst),
@@ -157,7 +155,7 @@ module game_management (
    - Floor has no wait time since it's on screen at all times
    - Floor type is 1 since it's not a cactus   
   */
-   obstacle #(.IX(D_WIDTH/2),.IY(D_HEIGHT-((D_HEIGHT - FLOOR_HEIGHT)/2)),.IX_VEL(0),.IY_VEL(0),.IWIDTH(D_WIDTH/2),.IHEIGHT((D_HEIGHT - FLOOR_HEIGHT)/2),.IWAIT(0),.TYPE(1)) floor (
+   obstacle #(.IX(D_WIDTH/2),.IY(D_HEIGHT-((D_HEIGHT - FLOOR_HEIGHT)/2)),.IX_VEL(0),.IY_VEL(0),.IWIDTH(D_WIDTH/2),.IHEIGHT((D_HEIGHT - FLOOR_HEIGHT)/2),.IWAIT(0),.TYPE(1),.OBSTACLE_WAIT_TIME(OBSTACLE_WAIT_TIME),.OBSTACLE_VEL(OBSTACLE_VEL),.CACTUS_HEIGHT_MIN(CACTUS_HEIGHT_MIN),.CACTUS_HEIGHT_MAX(CACTUS_HEIGHT_MAX),.FLOOR_HEIGHT(FLOOR_HEIGHT),.BIRD_HEIGHT_MAX(BIRD_HEIGHT_MAX)) floor (
     .i_clk(i_clk), 
     .i_ani_stb(pix_stb),
     .i_rst(rst),
@@ -171,7 +169,7 @@ module game_management (
 
   // This manages all the dino logic
   // Based on what the dino is doing, it'll output its position so we can draw
-  dinosaur dino(
+  dinosaur #(.DINO_X(DINO_X),.DINO_HEIGHT(DINO_HEIGHT),.DINO_DUCK_HEIGHT(DINO_DUCK_HEIGHT),.DINO_WIDTH(DINO_WIDTH),.DINO_REG_JUMP_STRENGTH(DINO_REG_JUMP_STRENGTH),.DINO_ULTRA_JUMP_STRENGTH(DINO_ULTRA_JUMP_STRENGTH),.DINO_GRAVITY(DINO_GRAVITY),.DINO_FASTFALL(DINO_FASTFALL),.FLOOR_HEIGHT(FLOOR_HEIGHT)) dino(
     .i_clk(game_clock), 
     .i_ani_stb(pix_stb),
     .i_rst(rst),

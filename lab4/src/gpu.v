@@ -1,5 +1,9 @@
 `timescale 1ns / 1ps
-module gpu(
+module gpu #(
+		DEAD_STATE = 2'b00
+	)
+	
+	(
 	input wire dp_clk,
 	input wire blink_clk,
 	input wire [1:0] game_state,
@@ -7,8 +11,6 @@ module gpu(
 	output reg [6:0] cats = 7'b1111111,
     output reg [3:0] anodes = 7,
     );
-
-`include "parameters.v"
 
     reg [3:0] val = 0;
     reg [1:0] index = 0;

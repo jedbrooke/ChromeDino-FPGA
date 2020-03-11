@@ -2,7 +2,7 @@
 
 module main(
 	input wire i_clk,			// Board Clock: 100 MHz on Arty/Basys3/Nexys
-	input wire RST_BTN,		// Reset Button
+	input wire rst_btn,		// Reset Button
 	input wire dino_jump,		// Jump Button 
 	input wire dino_duck,		// Duck Button 
 	input wire super_secret_switch,   // super secret switch
@@ -27,9 +27,9 @@ module main(
 	wire fast_score_clk; //Fast Score Clock for sss2 
 	 
 	//This will manage the state transitions 
-	gamestate gs (
+	gamestate #(.stDead(DEAD_STATE),.stGrace(GRACE_STATE),.stPlay(PLAY_STATE),.grace_period(150000000)) gs (
 		.clk(i_clk),
-		.rst(RST_BTN),
+		.rst(rst_btn),
 		.i_collided(collided),
 		.i_sss2(super_secret_switch2),
 		.score_clk(score_clk),
@@ -41,7 +41,7 @@ module main(
 	//Based on user inputs and gamestate, the appropriate frames will be drawn
 	game_management gm (
 		.i_clk(i_clk),
-		.RST_BTN(RST_BTN),
+		.rst(rst_btn),
 		.dino_jump(dino_jump),
 		.dino_duck(dino_duck),
 		.game_state(state),
@@ -57,7 +57,7 @@ module main(
 	//This produces the four clocks we need
 	clk_div clkdiv (
 		.clk(i_clk),
-		.rst(RST_BTN),
+		.rst(rst_btn),
 		.score_clk(score_clk),
 		.dp_clk(dp_clk),
 		.blink_clk(blink_clk),
@@ -65,7 +65,7 @@ module main(
 	);
 	
 	//This handles the actual output of the 7-segment display for score
-	gpu gpu(
+	gpu #(.DEAD_STATE(DEAD_STATE)) gpu(
 		.dp_clk(dp_clk),
 		.blink_clk(blink_clk),
 		.game_state(state),

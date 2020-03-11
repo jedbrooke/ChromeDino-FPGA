@@ -13,10 +13,16 @@ module obstacle #(
       IX_DIR=0,       // initial horizontal direction: 1 is right, 0 is left
       IY_DIR=0,       // initial vertical direction: 1 is down, 0 is up
       IX_VEL=1,	      // initial horizontal velocity 	
-      IY_VEL=0,       // initial vertical velocity 
-      IWAIT=OBSTACLE_WAIT_TIME,
+      IY_VEL=0,       // initial vertical velocity
+      IWAIT=2500,
       SEED=4'b0001,  // This is for the randomizer 
-      TYPE=0         // 0 for cactus, 1 for anything else 
+      TYPE=0,         // 0 for cactus, 1 for anything else 
+      OBSTACLE_WAIT_TIME=2500,
+      OBSTACLE_VEL = 7,
+      CACTUS_HEIGHT_MIN = 15,
+      CACTUS_HEIGHT_MAX = 30,
+      FLOOR_HEIGHT = 400,
+      BIRD_HEIGHT_MAX = 350
    )
 
    (
@@ -30,8 +36,6 @@ module obstacle #(
       output wire [11:0] o_y1,   // obstacle top edge
       output wire [11:0] o_y2    // obstacle bottom edge
    );
-
-`include "parameters.v"
 
    reg signed [11:0] x = IX;   // horizontal position of square centre
    reg [11:0] y = IY;   // vertical position of square centre
