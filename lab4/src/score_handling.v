@@ -1,6 +1,10 @@
 `timescale 1ns / 1ps
 
-module score_handling(
+module score_handling #(
+		play = 2
+	)
+
+	(
 	input clk,
 	input score_clk,
 	input rst,
@@ -11,8 +15,6 @@ module score_handling(
 	wire [3:0] num_arr[0:3]; //to hold num outputs from individual counters
 	reg en[0:3]; //to inc individual counters
 	wire [3:0] carry; //to hold carry outputs from individual counters
-	
-	parameter play = 2;
 
 	always @* begin 
 		en[3] <= (carry[2] && (state == play));
