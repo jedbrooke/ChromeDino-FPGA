@@ -111,7 +111,6 @@ module game_management (
     end
   endgenerate
 	
-
   /* 
   This is where we generate the birds:  
    - Each bird will start with an initial x-position of (display width + offset) 
@@ -141,8 +140,8 @@ module game_management (
    	end
   endgenerate
 	 
-   /* 
-  This is where we generate the floor:  
+  /* 
+  This is where we produce the floor:  
    - Floor will have a permanent x-position of half the display width 
    - Floor will have a permanent y-position of half the floor height pixels above the bottom of the display 
    - Floor will not be moving so x and y velocities are 0

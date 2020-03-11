@@ -15,7 +15,7 @@ module gamestate #(
 	input wire fast_score_clk,
 	input wire i_sss2,
 	output [15:0] o_nums,
-	output reg [1:0] o_state,
+	output reg [1:0] o_state
     );
 
 	/*

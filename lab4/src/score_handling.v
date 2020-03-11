@@ -5,10 +5,10 @@ module score_handling #(
 	)
 
 	(
-	input clk,
-	input score_clk,
-	input rst,
-	input [1:0] state,
+	input wire clk,
+	input wire score_clk,
+	input wire rst,
+	input wire [1:0] state,
 	output wire [15:0] nums
 	);
 

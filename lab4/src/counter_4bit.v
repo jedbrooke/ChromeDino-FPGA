@@ -6,7 +6,7 @@ module counter_4bit(
 	 input [3:0] i_max,
 	 input i_inc,
 	 output reg [3:0] o_val,
-	 output reg o_carry,
+	 output reg o_carry
 	);
 
 	reg carry_last; 
