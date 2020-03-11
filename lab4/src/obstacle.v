@@ -1,6 +1,7 @@
-// FPGA VGA Graphics Part 1: Square Animation
+// Adapted from:
+// "FPGA VGA Graphics Part 1: Square Animation
 // (C)2017-2018 Will Green - Licensed under the MIT License
-// Learn more at https://timetoexplore.net/blog/arty-fpga-vga-verilog-01
+// Learn more at https://timetoexplore.net/blog/arty-fpga-vga-verilog-01"
 
 `default_nettype none
 
@@ -17,6 +18,7 @@ module obstacle #(
       SEED=4'b0001,  // This is for the randomizer 
       TYPE=0         // 0 for cactus, 1 for anything else 
    )
+
    (
       input wire i_clk,          // base clock
       input wire i_ani_stb,      // animation clock: pixel clock is 1 pix/frame
@@ -28,7 +30,9 @@ module obstacle #(
       output wire [11:0] o_y1,   // obstacle top edge
       output wire [11:0] o_y2    // obstacle bottom edge
    );
+
 `include "parameters.v"
+
    reg signed [11:0] x = IX;   // horizontal position of square centre
    reg [11:0] y = IY;   // vertical position of square centre
    reg x_dir = IX_DIR;  // horizontal animation direction
@@ -40,9 +44,8 @@ module obstacle #(
    reg [7:0] height = IHEIGHT; //Size height of object (half of it)
    
    //Generate our random values 
-   randomValue #(.SEED(SEED)) rand(.i_out(rnd),.i_clk(rnd_clk),.i_rst(1'b0));
+   randomValue #(.SEED(SEED)) rand(.o_out(rnd),.i_clk(rnd_clk),.i_rst(1'b0));
    
-   //Not sure why it's 30 and what this does 
    assign waiting_state = wait_timer > 30;
 	
    //Update position of object
@@ -50,8 +53,6 @@ module obstacle #(
    assign o_x2 = x + IWIDTH;  // right
    assign o_y1 = y - height;  // top
    assign o_y2 = y + height;  // bottom
-	 
-	 
 
    always @ (posedge i_clk) begin
       if (i_rst) begin // on reset return to starting position
@@ -60,7 +61,7 @@ module obstacle #(
          x_dir <= IX_DIR;
          y_dir <= IY_DIR;
          wait_timer <= IWAIT;
-	 rnd_clk <= 0;
+	     rnd_clk <= 0;
       end
 	 
       /*
@@ -69,32 +70,33 @@ module obstacle #(
 		   - Move back to our waiting area and randomize what's needed for object 
 		Otherwise if we're not waiting, keep moving to the left. 
 		NOTE: Since the floor has no velocity, it'll always maintain its position 	
-	Otherwise, if we aren't animating: 
+      Otherwise, if we aren't animating: 
 		As long as we're not in grace period, keep running the randomizer and add in object delays
       */
+
       if (i_animate && i_ani_stb) begin
-	  if(~waiting_state) begin 
-	    if (x <= -(2*IWIDTH) - 1) begin  // obstacle is all the way off of the left of screen
-		    x <= IX + IWIDTH;  // move back to the right of the screen (waiting area)       
+         if(~waiting_state) begin 
+            if (x <= -(2*IWIDTH) - 1) begin  // obstacle is all the way off of the left of screen
+               x <= IX + IWIDTH;  // move back to the right of the screen (waiting area)       
                wait_timer <= (wait_timer > OBSTACLE_WAIT_TIME) ? wait_timer : OBSTACLE_WAIT_TIME; //reset the wait timer
                //re-randomize height
                rnd_clk <= ~rnd_clk;
-			   //Randomize size heights of cacti
-			   height <=  (TYPE) ? height : CACTUS_HEIGHT_MIN + rnd;
-			   //Randomize positional heights of birds
-			   y <= (TYPE) ? BIRD_HEIGHT_MAX - {rnd[3:0],2'b0} : y;
+			      //Randomize size heights of cacti
+			      height <=  (TYPE) ? height : CACTUS_HEIGHT_MIN + rnd;
+			      //Randomize positional heights of birds
+			      y <= (TYPE) ? BIRD_HEIGHT_MAX - {rnd[3:0],2'b0} : y;
             end //End of if not in waiting state 
-	 else begin
+            else begin
                x <= (x_dir) ? x + IX_VEL : x - (IX_VEL*OBSTACLE_VEL);  // move left if positive x_dir - jasper
-		 y <= (TYPE) ? y : FLOOR_HEIGHT - height;  // move down if positive y_dir - jasper
+               y <= (TYPE) ? y : FLOOR_HEIGHT - height;  // move down if positive y_dir - jasper
             end //End of movement block 
          end //End of if-else waiting_state block 
-	 else begin //*** Else statement for if we're not animating 
+         else begin //*** Else statement for if we're not animating 
             if (~i_grace) begin
                rnd_clk <= ~rnd_clk;
-		wait_timer <= wait_timer - {rnd[3:0],1'b0}; 
+               wait_timer <= wait_timer - {rnd[3:0],1'b0}; 
             end //End of if not in grace period 
-	 end //End of else statement indicated by *** 
+         end //End of else statement indicated by *** 
       end //End of if-else animate block 
    end //End of always i_clk block 
 	

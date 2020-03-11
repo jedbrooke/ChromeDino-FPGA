@@ -1,6 +1,7 @@
-// FPGA VGA Graphics Part 1: Square Animation
+// Adapted from:
+// "FPGA VGA Graphics Part 1: Square Animation
 // (C)2017-2018 Will Green - Licensed under the MIT License
-// Learn more at https://timetoexplore.net/blog/arty-fpga-vga-verilog-01
+// Learn more at https://timetoexplore.net/blog/arty-fpga-vga-verilog-01"
 
 `default_nettype none
 
@@ -17,6 +18,7 @@ module dinosaur (
     output wire [11:0] o_y1,  // square top edge
     output wire [11:0] o_y2   // square bottom edge
     );
+
 `include "parameters.v"
 
     reg [11:0] x = DINO_X;   // horizontal position of square centre

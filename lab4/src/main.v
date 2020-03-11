@@ -1,38 +1,20 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date:    09:58:19 03/06/2020 
-// Design Name: 
-// Module Name:    main 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
-//
-// Dependencies: 
-//
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
-//
-//////////////////////////////////////////////////////////////////////////////////
+
 module main(
-      input wire i_clk,			// Board Clock: 100 MHz on Arty/Basys3/Nexys
-      input wire RST_BTN,		// Reset Button
-      input wire dino_jump,		// Jump Button 
-      input wire dino_duck,		// Duck Button 
-      input wire super_secret_switch,   // super secret switch
-      input wire super_secret_switch2,	// super secret switch 2
-      output wire VGA_HS_O,             // Horizontal Sync Output
-      output wire VGA_VS_O,             // vertical Sync Output
-      output wire [2:0] VGA_R_O,     // Red Output
-      output wire [2:0] VGA_G_O,      // Green Output
-      output wire [1:0] VGA_B_O,      // Blue Output
-      output wire [6:0] seg,          // 7-Segment Output
-      output wire [3:0] an            // 4-bit Anode Output
-    );
+	input wire i_clk,			// Board Clock: 100 MHz on Arty/Basys3/Nexys
+	input wire RST_BTN,		// Reset Button
+	input wire dino_jump,		// Jump Button 
+	input wire dino_duck,		// Duck Button 
+	input wire super_secret_switch,   // super secret switch
+	input wire super_secret_switch2,	// super secret switch 2
+	output wire VGA_HS_O,             // Horizontal Sync Output
+	output wire VGA_VS_O,             // vertical Sync Output
+	output wire [2:0] VGA_R_O,     // Red Output
+	output wire [2:0] VGA_G_O,      // Green Output
+	output wire [1:0] VGA_B_O,      // Blue Output
+	output wire [6:0] seg,          // 7-Segment Output
+	output wire [3:0] an            // 4-bit Anode Output
+	);
 	 
 `include "parameters.v"
 
@@ -56,9 +38,8 @@ module main(
 		.o_state(state)
 	);
 	
-	//[RENAME] 
 	//Based on user inputs and gamestate, the appropriate frames will be drawn
-	top top (
+	game_management gm (
 		.i_clk(i_clk),
 		.RST_BTN(RST_BTN),
 		.dino_jump(dino_jump),
@@ -92,9 +73,5 @@ module main(
 		.cats(seg),
 		.anodes(an)
 	);
-	
-	
-
 	  
-
 endmodule

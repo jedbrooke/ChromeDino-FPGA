@@ -1,32 +1,29 @@
 `timescale 1ns / 1ps
 module gpu(
-				dp_clk,blink_clk,game_state,nums,cats,anodes
-);
+	input wire dp_clk,
+	input wire blink_clk,
+	input wire [1:0] game_state,
+	input [15:0] nums,
+	output reg [6:0] cats = 7'b1111111,
+    output reg [3:0] anodes = 7,
+    );
 
 `include "parameters.v"
-	 input wire dp_clk;
-	 input wire blink_clk; 
-	 input wire [1:0] game_state;//++++++++++++++++++++++++++++++++++++++ Made 2-bit wire instead of 1-bit
-	 input [15:0] nums;
-	 output reg [6:0] cats = 7'b1111111;
-    output reg [3:0] anodes = 7; //4'b0111;
 
-     reg [3:0] val = 0;
-     reg [1:0] index = 0;
-	 wire [3:0] split_nums[0:3];
-	 wire [6:0] decoded;
+    reg [3:0] val = 0;
+    reg [1:0] index = 0;
+	wire [3:0] split_nums[0:3];
+	wire [6:0] decoded;
 	 
-	 reg blink_enable = 0;
+	reg blink_enable = 0;
 	 
-	 assign split_nums[0] = nums[3:0];
-	 assign split_nums[1] = nums[7:4];
-	 assign split_nums[2] = nums[11:8];
-	 assign split_nums[3] = nums[15:12];
-	 
-	 
-	 
-	 always @(negedge dp_clk) cats[6:0] <= ~decoded[6:0]; //negedge to desync it from when the numbers are changing so we dont get inconsistencies
-	 always @(negedge dp_clk) begin
+	assign split_nums[0] = nums[3:0];
+	assign split_nums[1] = nums[7:4];
+	assign split_nums[2] = nums[11:8];
+	assign split_nums[3] = nums[15:12];
+	
+	always @(negedge dp_clk) cats[6:0] <= ~decoded[6:0]; //negedge to desync it from when the numbers are changing so we dont get inconsistencies
+	always @(negedge dp_clk) begin
 			if(~anodes[0])  begin
             anodes[0] <= 1;
             anodes[1] <= 0;
@@ -41,28 +38,19 @@ module gpu(
             anodes[0] <= 0;
         end
 		  index <= index + 1'b1;
-	 end
-	 
-	 
+	end
+	
     always @(posedge dp_clk) begin
         val <= split_nums[index]; 
     end
-	 
-	 // always @(posedge blink_clk) begin
-		//   if(|game_state) begin
-		// 		blink_enable <= 1'b0;
-		//   end else begin
-		//       blink_enable <= ~blink_enable;
-		//   end
-	 // end
 
-	  always @(posedge blink_clk) begin
-		  if(game_state == DEAD_STATE) begin //++++++++++++++++++++++++++Since we updated wire to be 2 bit for input gamestate, changed back to original implementation for testing
+	always @(posedge blink_clk) begin
+		if(game_state == DEAD_STATE) begin
 			blink_enable <= ~blink_enable;
-		  end else begin
+		end else begin
 		    blink_enable <= 0;
-		  end
-	 end
+		end
+	end
 
     decode_7seg decoder(
         .val(val),
@@ -70,5 +58,4 @@ module gpu(
         .cats(decoded[6:0])
     );
 	 
-	  
- endmodule
+endmodule

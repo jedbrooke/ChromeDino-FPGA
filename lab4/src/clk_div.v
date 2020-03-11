@@ -1,45 +1,22 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date:    10:40:02 02/19/2020 
-// Design Name: 
-// Module Name:    clk_div 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
-//
-// Dependencies: 
-//
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
-//
-//////////////////////////////////////////////////////////////////////////////////
-module clk_div(clk, rst, score_clk, dp_clk, blink_clk, fast_score_clk);
-	input clk;
-	input rst;
-	output reg score_clk;
-	output reg dp_clk;
-	output reg blink_clk;
-	output reg fast_score_clk;
+
+module clk_div(
+	input clk,
+	input rst,
+	output reg score_clk,
+	output reg dp_clk,
+	output reg blink_clk,
+	output reg fast_score_clk
+	);
 
 	reg [22:0] score_reg = 0; 
 	reg [22:0] fast_score_reg = 0; 
 	reg [19:0] dp_reg = 0;
 	reg [25:0] blink_reg = 0;
-	
-	/*
-	parameter dp_clk_max = 0;
-	parameter main_clk_max = 0;
-	parameter adj_clk_max = 0;
-	*/
 
 	parameter score_clk_max = 5000000; //20 Hz
-	parameter fast_score_clk_max = 100000; //100 Hz
-	parameter dp_clk_max = 200000; //100 Hz
+	parameter fast_score_clk_max = 100000; //1000 Hz
+	parameter dp_clk_max = 200000; //500 Hz
 	parameter blink_clk_max = 50000000; //2 Hz
 	 
 	always @(posedge clk) begin

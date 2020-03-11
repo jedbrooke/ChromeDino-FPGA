@@ -1,27 +1,5 @@
 `timescale 10ns / 1ns
 
-////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer:
-//
-// Create Date:   11:04:59 02/26/2020
-// Design Name:   top
-// Module Name:   C:/group1/lab4_g02/vga_test.v
-// Project Name:  lab4_g02
-// Target Device:  
-// Tool versions:  
-// Description: 
-//
-// Verilog Test Fixture created by ISE for module: top
-//
-// Dependencies:
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-////////////////////////////////////////////////////////////////////////////////
-
 module vga_test;
 
 	// Inputs

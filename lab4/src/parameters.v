@@ -1,4 +1,4 @@
-//diaply parameters
+//display parameters
 parameter D_WIDTH = 640;
 parameter D_HEIGHT = 480;
 //colors

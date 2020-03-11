@@ -1,45 +1,27 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date:    10:40:14 03/04/2020 
-// Design Name: 
-// Module Name:    gamestate 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
-//
-// Dependencies: 
-//
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
-//
-//////////////////////////////////////////////////////////////////////////////////
-module gamestate( clk, rst, i_collided, i_sss2, score_clk, fast_score_clk, o_nums, o_state,
+
+module gamestate(
+    input clk,
+	input rst,
+	input i_collided,
+	input wire score_clk,
+	input wire fast_score_clk,
+	input wire i_sss2,
+	output [15:0] o_nums,
+	output reg [1:0] o_state,
     );
 
 	/*
-	if rst, set state = grace period
+	Basic Psuedocode for understanding State Management:
+
+		if rst, set state = grace period
 	
-	otherwise, wait in grace period state for x time (parameter)
-		then move to "play" state, which activates obstacles to begin moving
+		otherwise, wait in grace period state for x time (parameter)
+			then move to "play" state, which activates obstacles to begin moving
 		
-	if collide, move to "dead" state
-		dinosaurs and obstacles should NOT be moving; counter should be STOPPED
-	
+		if collide, move to "dead" state
+			dinosaurs and obstacles should NOT be moving; counter should be STOPPED/BLINKING
 	*/
-	
-	input clk;
-	input rst;
-	input i_collided;
-	input wire score_clk;
-	input wire fast_score_clk;
-	input wire i_sss2;
-	output [15:0] o_nums;
-	output reg [1:0] o_state;
 	
 	parameter stDead = 0;
 	parameter stGrace = 1;
@@ -80,9 +62,6 @@ module gamestate( clk, rst, i_collided, i_sss2, score_clk, fast_score_clk, o_num
 				endcase
 	end //End of always
 	
-	
-	
-	
 	score_handling #(.play(stPlay)) score (
 		.clk(clk),
 		.score_clk(used_score_clk),
@@ -90,21 +69,5 @@ module gamestate( clk, rst, i_collided, i_sss2, score_clk, fast_score_clk, o_num
 		.state(o_state),
 		.nums(o_nums)
 	);
-		
-	// //score handling
-	// always @(posedge clk) begin
-	// 	case (o_state)
-	// 		stPlay:
-	// 			begin
-	// 				//keep counting 
-	// 				pause_state <= 0;
-	// 			end
-	// 		stDead: 
-	// 			begin
-	// 				//stop counting
-	// 				pause_state <= 1;  
-	// 			end
-	// 	endcase 
-	// end
 
 endmodule
