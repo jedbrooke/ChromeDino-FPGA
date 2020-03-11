@@ -32,6 +32,7 @@ module gamestate #(
 	
 	reg [27:0] grace_counter;
 	
+	//decide which score clock to use based on state of SUPER SECRET SWITCH
 	wire used_score_clk;
 	
 	assign used_score_clk = i_sss2 ? fast_score_clk : score_clk;
