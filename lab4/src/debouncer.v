@@ -1,23 +1,6 @@
 `timescale 1ns/1ps 
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date:     
-// Design Name: 
-// Module Name: debouncer 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
-//
-// Dependencies: 
-//
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
-//
-//////////////////////////////////////////////////////////////////////////////////
+
+//DEPRECATED, as unneeded for this implementation of button input handling
 
 module debouncer(i_clk,i_btn,o_btn_state); 
 

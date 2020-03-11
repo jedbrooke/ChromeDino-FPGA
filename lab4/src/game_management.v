@@ -36,7 +36,6 @@ module game_management (
   always @(posedge i_clk)
     {pix_stb, cnt} <= cnt + 16'h4000;  // divide by 4: (2^16)/4 = 0x4000
 
-   
   // This will keep track of the position of the cactus and bird
   // x1: left edge, x2: right edge, y1: top edge, y2: bottom edge 
   wire signed [11:0] cactus_data [0:NUM_CACTI-1][0:3]; // 12-bit values: 0-4095, x1,x2,y1,y2
@@ -82,10 +81,6 @@ module game_management (
 	 .o_y(y),		//y position of current pixel we're drawing
 	 .o_animate(animate)  //high for one tick at the end of active drawing
   );
-   
- 
-  //WHY ARE WE USING GENERATE? --> look up so we can explain? 
-  //Jasper said the for loop gave errors if we didn't use generate
 	
   //NOTE: Every time x or y position is being referenced, it's the object's (x,y) midpoint coordinate 
 	
