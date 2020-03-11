@@ -37,7 +37,7 @@ module top(
 
    
    // This will keep track of the position of the cactus and bird
-   // x1: lower left corner, x2: lower right corner, y1: top, y2: bottom 
+   // x1: left edge, x2: right edge, y1: top edge, y2: bottom edge 
    wire signed [11:0] cactus_data [0:NUM_CACTI-1][0:3]; // 12-bit values: 0-4095, x1,x2,y1,y2
    wire signed [11:0] bird_data [0:NUM_BIRDS-1][0:3];
 	
