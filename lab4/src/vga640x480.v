@@ -7,6 +7,7 @@
 
 `default_nettype none
 
+//THIS WAS GIVEN TO US FROM AN ONLINE SOURCE
 module vga640x480(
     input wire i_clk,           // base clock
     input wire i_pix_stb,       // pixel clock strobe
