@@ -7,9 +7,9 @@
 
 module obstacle #(
       IWIDTH=12,       // half obstacle width (for ease of coordinate calculations)
-      IHEIGHT=CACTUS_HEIGHT_MIN,      // half obstacle height 
-      IX=D_WIDTH,     // initial horizontal position of square center
-      IY=FLOOR_HEIGHT,// initial vertical position of square center
+      IHEIGHT=15,      // half obstacle height 
+      IX=640,     // initial horizontal position of square center
+      IY=400,// initial vertical position of square center
       IX_DIR=0,       // initial horizontal direction: 1 is right, 0 is left
       IY_DIR=0,       // initial vertical direction: 1 is down, 0 is up
       IX_VEL=1,	      // initial horizontal velocity 	
