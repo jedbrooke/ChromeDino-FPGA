@@ -23,6 +23,9 @@ module gamestateTB;
 	reg clk; 
 	reg rst; 
 	reg i_collided; 
+	wire score_clk; 
+	wire fast_score_clk; 
+	wire i_ss2; 
 	wire [15:0] o_nums; 
 	wire [1:0] o_state; 
 	
@@ -30,6 +33,9 @@ module gamestateTB;
 		.clk(clk), 
 		.rst(rst), 
 		.i_collided(i_collided),
+		.score_clk(score_clk), 
+		.fast_score_clk(fast_score_clk),
+		.i_ss2(i_ss2),
 		.o_nums(o_nums), 
 		.o_state(o_state)
 	);
@@ -39,9 +45,10 @@ module gamestateTB;
 		i_collided = 0; 
 		rst = 1; 
 		#10 rst = 0; 
-		#50000100 i_collided = 1; 
-		#10000 rst = 1; 
-		#15000000 $finish; 
+		#10000 i_collided = 1; 
+		#50000 rst = 1; 
+		#10 rst = 0; 
+		#1500000 $finish; 
 	end 
 always #5 clk = ~clk; 
 endmodule
