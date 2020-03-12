@@ -1,7 +1,7 @@
 
 module decode_7seg(
-    input [3:0] val,
-	input num_disable,
+   input wire [3:0] val,
+	input wire num_disable,
 	output reg [6:0] cats
 	);
 	

@@ -43,7 +43,7 @@ module mainTB;
 	// Instantiate the Unit Under Test (UUT)
 	main uut (
 		.i_clk(i_clk), 
-		.RST_BTN(RST_BTN), 
+		.rst_btn(RST_BTN), 
 		.dino_jump(dino_jump), 
 		.dino_duck(dino_duck), 
 		.super_secret_switch(super_secret_switch), 
@@ -67,7 +67,7 @@ module mainTB;
 		// Wait 100 ns for global reset to finish
 		#10;
 		#100 dino_jump = 1'b1;
-      #10000000 $finish;
+      #500000000 $finish;
 		// Add stimulus here
 
 	end

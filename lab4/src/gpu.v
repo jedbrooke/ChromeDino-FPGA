@@ -7,9 +7,9 @@ module gpu #(
 	input wire dp_clk,
 	input wire blink_clk,
 	input wire [1:0] game_state,
-	input [15:0] nums,
+	input wire [15:0] nums,
 	output reg [6:0] cats = 7'b1111111,
-    output reg [3:0] anodes = 7
+   output reg [3:0] anodes = 7
     );
 
     reg [3:0] val = 0;

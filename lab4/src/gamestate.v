@@ -8,9 +8,9 @@ module gamestate #(
 	)
 
 	(
-    input clk,
-	input rst,
-	input i_collided,
+   input wire clk,
+	input wire rst,
+	input wire i_collided,
 	input wire score_clk,
 	input wire fast_score_clk,
 	input wire i_sss2,

@@ -14,7 +14,7 @@ module vga_test;
 	wire [1:0] VGA_B_O;
 
 	// Instantiate the Unit Under Test (UUT)
-	top uut (
+	gmae_management uut (
 		.i_clk(CLK), 
 		.RST_BTN(RST_BTN), 
 		.game_state(2'b10),

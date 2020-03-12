@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 
 module clk_div(
-	input clk,
-	input rst,
+	input wire clk,
+	input wire rst,
 	output reg score_clk,
 	output reg dp_clk,
 	output reg blink_clk,
